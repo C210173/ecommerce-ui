@@ -1,0 +1,9 @@
+.sidebar-closed {
+    width: 4rem; 
+    transition: width 0.5s ease-in-out; 
+  }
+  
+  .sidebar-open {
+    width: 16rem;
+    transition: width 0.5s ease-in-out;
+  }
