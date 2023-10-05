@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { FiMenu } from "react-icons/fi";
-import { FaQuestionCircle } from "react-icons/fa";
+import { RiFeedbackFill } from "react-icons/ri";
+import { FaRankingStar } from "react-icons/fa6";
 import { AiFillHome } from "react-icons/ai";
 import { HiTemplate } from "react-icons/hi";
 import {
@@ -9,15 +10,16 @@ import {
   BsPieChartFill,
 } from "react-icons/bs";
 import {
-  BiCalendar,
   BiCategoryAlt,
   BiLineChart,
   BiSolidUserRectangle,
 } from "react-icons/bi";
 import "./Sidebar.css";
+import { useNavigate } from "react-router-dom";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+  const navigate = useNavigate();
   const sidebarClass = isSidebarOpen ? "sidebar-open" : "sidebar-closed";
 
   return (
@@ -60,29 +62,58 @@ const Sidebar = () => {
           isSidebarOpen ? "px-10" : "items-center"
         }`}
       >
-        <div className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500">
+        <div
+          onClick={() => navigate("/admin/dashboard")}
+          className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500"
+        >
           <AiFillHome className="text-xl text-white mx-3" />
           {isSidebarOpen ? (
             <p className="text-white text-sx">Dashboard</p>
           ) : null}
         </div>
-        <div className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500">
+        <div
+          onClick={() => navigate("/admin/user")}
+          className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500"
+        >
           <BiSolidUserRectangle className="text-xl text-white mx-3" />
           {isSidebarOpen ? <p className="text-white text-sx">User</p> : null}
         </div>
-        <div className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500">
+        <div
+          onClick={() => navigate("/admin/category")}
+          className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500"
+        >
           <BiCategoryAlt className="text-xl text-white mx-3" />
           {isSidebarOpen ? (
             <p className="text-white text-sx">Category</p>
           ) : null}
         </div>
-        <div className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500">
+        <div
+          onClick={() => navigate("/admin/product")}
+          className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500"
+        >
           <HiTemplate className="text-xl text-white mx-3" />
           {isSidebarOpen ? <p className="text-white text-sx">Product</p> : null}
         </div>
-        <div className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500">
+        <div
+          onClick={() => navigate("/admin/order")}
+          className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500"
+        >
           <BsBagPlusFill className="text-xl text-white mx-3" />
           {isSidebarOpen ? <p className="text-white text-sx">Order</p> : null}
+        </div>
+        <div
+          onClick={() => navigate("/admin/rating")}
+          className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500"
+        >
+          <FaRankingStar className="text-xl text-white mx-3" />
+          {isSidebarOpen ? <p className="text-white text-sx">Rating</p> : null}
+        </div>
+        <div
+          onClick={() => navigate("/admin/review")}
+          className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500"
+        >
+          <RiFeedbackFill className="text-xl text-white mx-3" />
+          {isSidebarOpen ? <p className="text-white text-sx">Review</p> : null}
         </div>
         <div className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500">
           <BsFillBarChartLineFill className="text-xl text-white mx-3" />
@@ -101,16 +132,6 @@ const Sidebar = () => {
           {isSidebarOpen ? (
             <p className="text-white text-sx">Linechart</p>
           ) : null}
-        </div>
-        <div className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500">
-          <BiCalendar className="text-xl text-white mx-3" />
-          {isSidebarOpen ? (
-            <p className="text-white text-sx">Calendar</p>
-          ) : null}
-        </div>
-        <div className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500">
-          <FaQuestionCircle className="text-xl text-white mx-3" />
-          {isSidebarOpen ? <p className="text-white text-sx">FAQ</p> : null}
         </div>
       </div>
     </div>

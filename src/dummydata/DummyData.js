@@ -1,26 +1,168 @@
 export const userList = [
-  { id: 1, name: "User 1", email: "user1@example.com", role: "ADMIN" },
-  { id: 2, name: "User 2", email: "user2@example.com", role: "USER" },
-  { id: 3, name: "User 3", email: "user3@example.com", role: "USER" },
-  { id: 4, name: "User 4", email: "user4@example.com", role: "SHIPPER" },
-  { id: 5, name: "User 5", email: "user5@example.com", role: "USER" },
-  { id: 6, name: "User 6", email: "user6@example.com", role: "ADMIN" },
-  { id: 7, name: "User 7", email: "user7@example.com", role: "SHIPPER" },
-  { id: 8, name: "User 8", email: "user8@example.com", role: "USER" },
-  { id: 9, name: "User 9", email: "user9@example.com", role: "SHIPPER" },
-  { id: 10, name: "User 10", email: "user10@example.com", role: "USER" },
-  { id: 11, name: "User 11", email: "user11@example.com", role: "ADMIN" },
-  { id: 12, name: "User 12", email: "user12@example.com", role: "USER" },
-  { id: 13, name: "User 13", email: "user13@example.com", role: "USER" },
-  { id: 14, name: "User 14", email: "user14@example.com", role: "SHIPPER" },
-  { id: 15, name: "User 15", email: "user15@example.com", role: "USER" },
-  { id: 16, name: "User 16", email: "user16@example.com", role: "ADMIN" },
+  {
+    id: "651669065a704b04a1a76019",
+    password: "$2a$10$nx6hODmGSx/X5KdqtYBnKewsGPQomQchF27V4elfA8EyuvOJTd1aW",
+    fullName: "NguyenHao",
+    email: "hao@gmail.com",
+    phoneNumber: "07088889999",
+    role: "ADMIN",
+  },
+  {
+    id: "65166a5c5a704b04a1a7601a",
+    password: "$2a$10$m7fbEMgFzb5SqUCGu3k3EePT7vql4naYijKvL3194v8/ZLWc9SqiO",
+    fullName: "Băng Châu",
+    email: "chau@gmail.com",
+    phoneNumber: "07088880000",
+    role: "ADMIN",
+  },
+  {
+    id: "65167366fafcdc23fbc22abc",
+    password: "$2a$10$cHqgzsKiAtSupPqgNOoAdOps8iLxhwsGNijgOUizqgn45qnr6d3DC",
+    fullName: "van khoa",
+    email: "khoa@gmail.com",
+    phoneNumber: "07088881111",
+    role: "USER",
+  },
+  {
+    id: "6518517e35fe316d520dfa1c",
+    password: "$2a$10$Jh89E7ciZNFY6yfSqGgLDODG99OqzFpNo1wAf44owv.fXQae55G1y",
+    fullName: "Ngọc Vinh",
+    email: "vinh@gmail.com",
+    phoneNumber: "07088881119",
+    role: "USER",
+    address: [
+      {
+        street: "New Street",
+        city: "New City",
+        state: "New State",
+        postalCode: "New Zip Code",
+        country: "New Country",
+      },
+    ],
+    paymentDetails: [
+      {
+        cardNumber: "5253426576476576",
+        cardHolderName: "ngoc vinh",
+        expirationDate: "2028-10-20",
+        cvv: "New CVV",
+      },
+    ],
+  },
+];
+
+export const ratingList = [
+  {
+    id: "6516fc3970cf3223d4bc6b5d",
+    userId: "65167366fafcdc23fbc22abc",
+    productId: "6516981f465464094c44f5db",
+    rating: 5,
+    createdAt: "2023-09-30T01:32:57.611",
+  },
+  {
+    id: "6516fc7570cf3223d4bc6b5e",
+    userId: "65167366fafcdc23fbc22abc",
+    productId: "65169851465464094c44f5dc",
+    rating: 4,
+    createdAt: "2023-09-30T01:33:57.095",
+  },
+];
+
+export const reviewList = [
+  {
+    id: "651704cd62efc5717ea6c623",
+    userId: "65167366fafcdc23fbc22abc",
+    productId: "6516981f465464094c44f5db",
+    title: "Good product",
+    comment: "Your detailed review comment here",
+    createdAt: "2023-09-30T02:09:33.962",
+  },
 ];
 
 export const categoryList = [
   { id: 1, name: "Smart watch", description: "cheap smart watches" },
   { id: 2, name: "Smart phone", description: "cheap phone watches" },
   { id: 3, name: "Laptop", description: "cheap Laptop watches" },
+];
+
+export const orderList = [
+  {
+    id: "651859c335fe316d520dfa1f",
+    userId: "6518517e35fe316d520dfa1c",
+    items: [
+      {
+        productId: "6516981f465464094c44f5db",
+        productName: "Samsung Galaxy S21",
+        quantity: 2,
+        price: 799.99,
+      },
+      {
+        productId: "6516981f4654640da94c44f5db",
+        productName: "Samsung Galaxy S22",
+        quantity: 2,
+        price: 799.99,
+      },
+      {
+        productId: "6516981f46ad5464094c44f5db",
+        productName: "Samsung Galaxy S23",
+        quantity: 2,
+        price: 799.99,
+      },
+    ],
+    totalPrice: 4799.94,
+    totalItem: 6,
+    orderDate: "2023-10-01T02:24:19.742",
+    status: "PENDING",
+    shippingAddress: [
+      {
+        street: "New Street",
+        city: "New City",
+        state: "New State",
+        postalCode: "New Zip Code",
+        country: "New Country",
+      },
+    ],
+    paymentDetails: [
+      {
+        cardNumber: "5253426576476576",
+        cardHolderName: "ngoc vinh",
+        expirationDate: "2028-10-20",
+        cvv: "New CVV",
+      },
+    ],
+  },
+  {
+    id: "651859css335fe316d520dfa1f",
+    userId: "6518517eđc35fe316d520dfa1c",
+    items: [
+      {
+        productId: "6516xư981f465464094c44f5db",
+        productName: "Samsung Galaxy S21",
+        quantity: 2,
+        price: 799.99,
+      },
+    ],
+    totalPrice: 4799.94,
+    totalItem: 6,
+    orderDate: "2023-10-01T02:24:19.742",
+    status: "PENDING",
+    shippingAddress: [
+      {
+        street: "New Street",
+        city: "New City",
+        state: "New State",
+        postalCode: "New Zip Code",
+        country: "New Country",
+      },
+    ],
+    paymentDetails: [
+      {
+        cardNumber: "5253426576476576",
+        cardHolderName: "ngoc vinh",
+        expirationDate: "2028-10-20",
+        cvv: "New CVV",
+      },
+    ],
+  },
 ];
 
 export const productList = [

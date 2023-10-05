@@ -1,27 +1,14 @@
 import React, { useState } from "react";
-import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
-import { FiSearch } from "react-icons/fi";
 import DefaultLayout from "./layout/DefaultLayout";
+import { FaTrashAlt } from "react-icons/fa";
 import Header from "./layout/Header";
-import UserModal from "./components/UserModal";
-import EditRoleModal from "./components/EditRoleModal";
+import { format } from "date-fns";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
-import { userList } from "../../dummydata/DummyData";
+import { reviewList } from "../../dummydata/DummyData";
 
-const UserManagement = () => {
-  // action detail user
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [userDetails, setUserDetails] = useState({});
-  const openModal = (user) => {
-    setUserDetails(user);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
-  const itemsPerPage = 10; // Số người dùng trên mỗi trang
-  const totalPages = Math.ceil(userList.length / itemsPerPage);
+const ReviewManagement = () => {
+  const itemsPerPage = 7; // Số người dùng trên mỗi trang
+  const totalPages = Math.ceil(reviewList.length / itemsPerPage);
 
   const paginateData = (data, currentPage) => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -29,31 +16,12 @@ const UserManagement = () => {
     return data.slice(startIndex, endIndex);
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const displayedUsers = paginateData(userList, currentPage);
-  // action edit role
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState({});
-
-  const openEditModal = (user) => {
-    setEditingUser(user);
-    setIsEditModalOpen(true);
-  };
-
-  const closeEditModal = () => {
-    setIsEditModalOpen(false);
-  };
-
-  const handleSaveRole = (userId, role) => {
-    // Gửi yêu cầu API hoặc thực hiện cập nhật vai trò ở đây
-    console.log(`User ID: ${userId}, New Role: ${role}`);
-    // Sau khi hoàn thành, bạn có thể cập nhật danh sách người dùng tại đây (nếu cần)
-  };
-  // action delete
+  const displayedReviews = paginateData(reviewList, currentPage);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingUser, setDeletingUser] = useState(null);
 
-  const openDeleteModal = (user) => {
-    setDeletingUser(user);
+  const openDeleteModal = (rating) => {
+    setDeletingUser(rating);
     setIsDeleteModalOpen(true);
   };
 
@@ -62,9 +30,9 @@ const UserManagement = () => {
     setIsDeleteModalOpen(false);
   };
 
-  const handleDeleteUser = (userId) => {
+  const handleDeleteUser = (ratingId) => {
     // Gửi yêu cầu API hoặc thực hiện xóa người dùng ở đây
-    console.log(`Deleted User ID: ${userId}`);
+    console.log(`Deleted Rating ID: ${ratingId}`);
     // Sau khi xóa, bạn có thể cập nhật danh sách người dùng tại đây (nếu cần)
   };
   return (
@@ -72,31 +40,26 @@ const UserManagement = () => {
       children={
         <div className="bg-gray-700 w-full h-[94vh] p-5 relative">
           <div className="flex justify-around">
-            <Header title={"User Management"} subtitle={"List user"} />
-            <div className="flex items-center mr-2">
-              <input
-                type="text"
-                className="rounded-md h-8 px-2 mr-2 border-none text-gray-700 outline-none"
-                placeholder="Search user"
-              />
-              <FiSearch className="text-xl text-white mr-3 cursor-pointer" />
-            </div>
+            <Header title={"Review Management"} subtitle={"List review"} />
           </div>
           <div className="shadow-md rounded-lg overflow-hidden mx-5">
             <table className="min-w-full">
               <thead>
                 <tr>
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                    ID
+                    User
                   </th>
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                    Name
+                    Product
                   </th>
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                    Email
+                    Title
                   </th>
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                    Role
+                    Comment
+                  </th>
+                  <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                    Create date
                   </th>
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                     Action
@@ -104,27 +67,18 @@ const UserManagement = () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-100">
-                {displayedUsers.map((user) => (
-                  <tr key={user.id} className="hover:bg-gray-200">
-                    <td className="px-6 py-4">{user.id}</td>
-                    <td className="px-6 py-4">{user.fullName}</td>
-                    <td className="px-6 py-4">{user.email}</td>
-                    <td className="px-6 py-4">{user.role}</td>
+                {displayedReviews.map((review) => (
+                  <tr key={review.id} className="hover:bg-gray-200">
+                    <td className="px-6 py-4">{review.userId}</td>
+                    <td className="px-6 py-4">{review.productId}</td>
+                    <td className="px-6 py-4">{review.title}</td>
+                    <td className="px-6 py-4">{review.comment}</td>
+                    <td className="px-6 py-4">
+                      {format(new Date(review.createdAt), "dd/MM/yyyy HH:mm")}
+                    </td>
                     <td className="px-6 py-4">
                       <button
-                        onClick={() => openModal(user)}
-                        className="text-indigo-600 hover:text-indigo-900 mr-5"
-                      >
-                        <FaEye />
-                      </button>
-                      <button
-                        onClick={() => openEditModal(user)}
-                        className="text-green-600 hover:text-green-900 mr-5"
-                      >
-                        <FaEdit />
-                      </button>
-                      <button
-                        onClick={() => openDeleteModal(user)}
+                        onClick={() => openDeleteModal(review)}
                         className="text-red-600 hover:text-red-900"
                       >
                         <FaTrashAlt />
@@ -170,22 +124,12 @@ const UserManagement = () => {
               Next
             </button>
           </div>
-          {isModalOpen && (
-            <UserModal user={userDetails} closeModal={closeModal} />
-          )}
-          {isEditModalOpen && (
-            <EditRoleModal
-              user={editingUser}
-              closeModal={closeEditModal}
-              onSave={handleSaveRole}
-            />
-          )}
           {isDeleteModalOpen && (
             <ConfirmDeleteModal
               children={deletingUser}
               onCancel={closeDeleteModal}
               onDelete={handleDeleteUser}
-              message={`Are you sure you want to delete user ${deletingUser.fullName}`}
+              message={"Are you sure you want to delete this review"}
             />
           )}
         </div>
@@ -194,4 +138,4 @@ const UserManagement = () => {
   );
 };
 
-export default UserManagement;
+export default ReviewManagement;

@@ -3,7 +3,7 @@ import { ImCancelCircle } from "react-icons/im";
 import { BsFillHouseCheckFill } from "react-icons/bs";
 import { MdOutlineMail } from "react-icons/md";
 
-const UserModal = ({ name, email, address, closeModal }) => {
+const UserModal = ({ user, closeModal }) => {
   const orderHistory = [
     { id: 1, productName: "Product 1", status: "Delivered" },
     { id: 2, productName: "Product 2", status: "Processing" },
@@ -26,14 +26,21 @@ const UserModal = ({ name, email, address, closeModal }) => {
             />
           </div>
           <div className="flex flex-col w-[28vw] justify-center">
-            <h2 className="text-xl font-semibold text-gray-800">{name}</h2>
+            <h2 className="text-xl font-semibold text-gray-800">
+              {user.fullName}
+            </h2>
             <div className="flex items-center">
               <MdOutlineMail className="text-xl text-red-500" />
-              <p className="ml-3 text-gray-500">{email}</p>
+              <p className="ml-3 text-gray-500">{user.email}</p>
             </div>
-            <div className="flex items-center">
-              <BsFillHouseCheckFill className="text-xl text-blue-400" />
-              <p className="ml-3 text-gray-500">{address}</p>
+            <div className="flex">
+              <BsFillHouseCheckFill className="text-xl text-blue-400 mt-[0.1rem]" />
+              {user.address?.map((item, index) => (
+                <p key={index} className="ml-3 text-gray-500">
+                  {item.postalCode} : {item.street}, {item.city}, {item.state},{" "}
+                  {item.country}
+                </p>
+              ))}
             </div>
             <div className="mt-3">
               <h3 className="text-gray-700">Order history</h3>

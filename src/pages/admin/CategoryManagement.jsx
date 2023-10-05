@@ -129,7 +129,7 @@ const CategoryManagement = () => {
               children={deletingCategory}
               onCancel={closeDeleteModal}
               onDelete={handleDeleteCategory}
-              message={"Are you sure you want to delete category "}
+              message={`Are you sure you want to delete category ${deletingCategory.name}`}
             />
           )}
           {isCreateModalOpen && (

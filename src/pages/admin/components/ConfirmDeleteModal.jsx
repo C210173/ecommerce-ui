@@ -9,9 +9,7 @@ const ConfirmDeleteModal = ({ children, onCancel, onDelete, message }) => {
           <h2 className="text-xl font-semibold text-gray-800 mb-4">
             Confirm Delete
           </h2>
-          <p className="text-gray-700 mb-4">
-            {message} <strong>{children.name}</strong>?
-          </p>
+          <p className="text-gray-700 mb-4">{message} ?</p>
           <div className="flex justify-end">
             <button
               onClick={onCancel}
