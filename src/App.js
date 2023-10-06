@@ -7,6 +7,8 @@ import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
 import RatingManagement from "./pages/admin/RatingManagement";
 import ReviewManagement from "./pages/admin/ReviewManagement";
+import Login from "./pages/auth/Login";
+import Register from "./pages/auth/Register";
 
 function App() {
   return (
@@ -18,6 +20,8 @@ function App() {
       <Route path="/admin/order" element={<OrderManagement />} />
       <Route path="/admin/rating" element={<RatingManagement />} />
       <Route path="/admin/review" element={<ReviewManagement />} />
+      <Route path="/login" element={<Login />} />
+      <Route path="/register" element={<Register />} />
     </Routes>
   );
 }
