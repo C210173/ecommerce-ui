@@ -1,3 +1,47 @@
+export const cartList = [
+  {
+    product: {
+      id: "65169851465464094c44f5dc",
+      name: "Apple Watch Series 6",
+      brand: "Apple",
+      description:
+        "A popular smartwatch from Apple with various health features.",
+      quantity: 30,
+      price: 399.99,
+      imageUrl:
+        "https://www.apple.com/newsroom/images/product/watch/standard/Apple_watch-experience-for-entire-family-hero_09152020_big.jpg.large.jpg",
+      operatingSystem: "watchOS",
+      connectivity: "Bluetooth",
+      category: {
+        id: "6516911217d56928fbf9a3e2",
+        name: "smart watch",
+        description: "Electronic devices and gadgets",
+      },
+    },
+    quantity: 1,
+  },
+  {
+    product: {
+      id: "6516981f465464094c44f5db",
+      name: "Samsung Galaxy S21",
+      brand: "Samsung",
+      description: "A high-end smartphone with great features.",
+      quantity: 50,
+      price: 799.99,
+      imageUrl:
+        "https://i5.walmartimages.com/seo/Restored-Samsung-Galaxy-S21-5G-128GB-G991U-Fully-Unlocked-GSM-CDMA-Smartphone_8f9273d5-4f66-4747-8b50-21cb02a162cc.ad37a3228fe11c90e0aaa1d6a73d88bd.jpeg?odnHeight=2000&odnWidth=2000&odnBg=FFFFFF",
+      operatingSystem: "Android",
+      connectivity: "4G",
+      category: {
+        id: "6516911217d56928fbf9a3e2",
+        name: "smart watch",
+        description: "Electronic devices and gadgets",
+      },
+    },
+    quantity: 2,
+  },
+];
+
 export const userList = [
   {
     id: "651669065a704b04a1a76019",
@@ -79,9 +123,21 @@ export const reviewList = [
 ];
 
 export const categoryList = [
-  { id: 1, name: "Smart watch", description: "cheap smart watches" },
-  { id: 2, name: "Smart phone", description: "cheap phone watches" },
-  { id: 3, name: "Laptop", description: "cheap Laptop watches" },
+  {
+    id: "6516911217d56928fbf9a3e2",
+    name: "smart watch",
+    description: "Electronic devices and gadgets",
+  },
+  {
+    id: "651696c8465464094c44f5d9",
+    name: "Smartphones",
+    description: "Mobile phones with advanced features.",
+  },
+  {
+    id: "651696e0465464094c44f5da",
+    name: "Laptops",
+    description: "Portable personal computers.",
+  },
 ];
 
 export const orderList = [
@@ -167,238 +223,175 @@ export const orderList = [
 
 export const productList = [
   {
-    id: 1,
-    name: "Smartwatch A1",
-    brand: "BrandX",
-    description:
-      "All-day battery life is based on the following use: 90 time checks, 90 notifications, 45 minutes of app use, and a 60-minute workout with music playback from Apple Watch via Bluetooth, over the course of 18 hours; Apple Watch Series 9 (GPS) usage includes connection to iPhone via Bluetooth during the entire 18-hour test; Apple Watch Series 9 ",
-    quantity: 20,
-    price: 49.99,
-    imageUrl:
-      "https://images.macrumors.com/t/c96sXgJ-lcz2Agp1EimXz2CwYMM=/800x0/smart/article-new/2022/09/apple-watch-ultra-1.jpg?lossy",
-    operatingSystem: "Custom OS",
-    connectivity: "Bluetooth",
-    category: {
-      id: 1,
-      name: "Smart watch",
-      description: "cheap smart watches",
+    id: "652609640eebb518f1779558",
+    name: "Apple watch seri 9",
+    brand: {
+      id: "652600bc0eebb518f1779554",
+      name: "Apple",
+      imageUrl:
+        "https://www.tailorbrands.com/wp-content/uploads/2021/01/apple_logo_1988.jpg",
+      description: "Apple Electronics Co., Ltd.",
     },
-    reviews: [
-      {
-        id: 1,
-        username: "user1",
-        text: "Great value for the price!",
-        rating: 4,
-      },
-      { id: 2, username: "user2", text: "Simple and functional.", rating: 3 },
-    ],
-    ratings: [
-      { id: 1, stars: 4, count: 5 },
-      { id: 2, stars: 3, count: 2 },
-    ],
-  },
-  {
-    id: 2,
-    name: "Smartphone B2",
-    brand: "BrandY",
-    description: "High-end smartphone with advanced features.",
-    quantity: 15,
-    price: 799.99,
-    imageUrl:
-      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-finish-select-202207-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1693063160403",
-    operatingSystem: "Android 12",
-    connectivity: "5G, Wi-Fi 6, Bluetooth 5.2",
-    category: {
-      id: 2,
-      name: "Smart phone",
-      description: "premium smartphones",
-    },
-    reviews: [
-      { id: 3, username: "user3", text: "Absolutely amazing!", rating: 5 },
-      {
-        id: 4,
-        username: "user4",
-        text: "Best phone I've ever had.",
-        rating: 5,
-      },
-    ],
-    ratings: [
-      { id: 3, stars: 5, count: 10 },
-      { id: 4, stars: 4, count: 8 },
-    ],
-  },
-  {
-    id: 3,
-    name: "Smartphone B2",
-    brand: "BrandY",
-    description: "High-end smartphone with advanced features.",
-    quantity: 15,
-    price: 799.99,
-    imageUrl:
-      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-finish-select-202207-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1693063160403",
-    operatingSystem: "Android 12",
-    connectivity: "5G, Wi-Fi 6, Bluetooth 5.2",
-    category: {
-      id: 2,
-      name: "Smart phone",
-      description: "premium smartphones",
-    },
-    reviews: [
-      { id: 3, username: "user3", text: "Absolutely amazing!", rating: 5 },
-      {
-        id: 4,
-        username: "user4",
-        text: "Best phone I've ever had.",
-        rating: 5,
-      },
-    ],
-    ratings: [
-      { id: 3, stars: 5, count: 10 },
-      { id: 4, stars: 4, count: 8 },
-    ],
-  },
-  {
-    id: 4,
-    name: "Laptop C3",
-    brand: "BrandZ",
-    description: "Powerful laptop for work and gaming.",
-    quantity: 10,
-    price: 1299.99,
-    imageUrl:
-      "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-space-gray-select-201810?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1664472289661",
-    operatingSystem: "Windows 11",
-    connectivity: "Wi-Fi 6, Bluetooth 5.0",
-    category: { id: 3, name: "Laptop", description: "premium laptops" },
-    reviews: [
-      { id: 5, username: "user5", text: "Great for gaming!", rating: 4 },
-      { id: 6, username: "user6", text: "Fast and reliable.", rating: 5 },
-    ],
-    ratings: [
-      { id: 5, stars: 4, count: 7 },
-      { id: 6, stars: 5, count: 12 },
-    ],
-  },
-  {
-    id: 5,
-    name: "Smartwatch D4",
-    brand: "BrandX",
-    description: "Stylish smartwatch with fitness tracking.",
+    description: "A fitness-focused smartwatch with long battery life.",
     quantity: 25,
-    price: 79.99,
-    imageUrl:
-      "https://images.macrumors.com/t/c96sXgJ-lcz2Agp1EimXz2CwYMM=/800x0/smart/article-new/2022/09/apple-watch-ultra-1.jpg?lossy",
-    operatingSystem: "Custom OS",
-    connectivity: "Bluetooth",
+    price: 249.99,
+    imageUrl: [
+      "https://www.apple.com/newsroom/images/product/watch/standard/Apple_watch-series7_hero_09142021_big.jpg.large.jpg",
+      "https://store.storeimages.cdn-apple.com/8567/as-images.apple.com/is/HQWW2?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1681150922615",
+    ],
+    operatingSystem: "IOS",
+    connectivity: "Bluetooth, wifi",
     category: {
-      id: 1,
-      name: "Smart watch",
-      description: "cheap smart watches",
+      id: "6516911217d56928fbf9a3e2",
+      name: "smart watch",
+      description: "Electronic devices and gadgets",
     },
-    reviews: [
-      { id: 7, username: "user7", text: "Looks great on my wrist!", rating: 4 },
-      {
-        id: 8,
-        username: "user8",
-        text: "Easy to use fitness features.",
-        rating: 4,
-      },
-    ],
-    ratings: [
-      { id: 7, stars: 4, count: 6 },
-      { id: 8, stars: 4, count: 5 },
-    ],
   },
   {
-    id: 6,
-    name: "Smartphone E5",
-    brand: "BrandY",
-    description: "Mid-range smartphone with good camera.",
-    quantity: 30,
-    price: 399.99,
-    imageUrl:
-      "https://store.storeimages.cdn-apple.com/4982/as-images.apple.com/is/iphone-13-finish-select-202207-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1693063160403",
-    operatingSystem: "Android 11",
-    connectivity: "4G LTE, Wi-Fi 5, Bluetooth 5.1",
+    id: "65260a210eebb518f1779559",
+    name: "Samsung watch 5",
+    brand: {
+      id: "6526007f0eebb518f1779553",
+      name: "Samsung",
+      imageUrl:
+        "https://images.samsung.com/is/image/samsung/assets/us/about-us/brand/logo/mo/360_197_1.png?$FB_TYPE_B_PNG$",
+      description: "Samsung Electronics Co., Ltd.",
+    },
+    description: "A fitness-focused smartwatch with long battery life.",
+    quantity: 25,
+    price: 349.99,
+    imageUrl: [
+      "https://images.samsung.com/is/image/samsung/p6pim/vn/2208/gallery/vn-galaxy-watch5-40mm-431117-sm-r905fzsaxxv-thumb-533192958",
+    ],
+    operatingSystem: "Android",
+    connectivity: "Bluetooth, wifi",
     category: {
-      id: 2,
-      name: "Smart phone",
-      description: "affordable smartphones",
+      id: "6516911217d56928fbf9a3e2",
+      name: "smart watch",
+      description: "Electronic devices and gadgets",
     },
-    reviews: [
-      { id: 9, username: "user9", text: "Value for money.", rating: 4 },
-      {
-        id: 10,
-        username: "user10",
-        text: "Camera quality is decent.",
-        rating: 3,
-      },
-    ],
-    ratings: [
-      { id: 9, stars: 4, count: 8 },
-      { id: 10, stars: 3, count: 4 },
-    ],
   },
   {
-    id: 7,
-    name: "Laptop F6",
-    brand: "BrandZ",
-    description: "Budget-friendly laptop for everyday tasks.",
-    quantity: 18,
-    price: 599.99,
-    imageUrl:
-      "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-space-gray-select-201810?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1664472289661",
-    operatingSystem: "Windows 10",
-    connectivity: "Wi-Fi 5, Bluetooth 4.2",
-    category: { id: 3, name: "Laptop", description: "budget laptops" },
-    reviews: [
-      { id: 11, username: "user11", text: "Great for students.", rating: 4 },
-      { id: 12, username: "user12", text: "Decent performance.", rating: 3 },
-    ],
-    ratings: [
-      { id: 11, stars: 4, count: 6 },
-      { id: 12, stars: 3, count: 5 },
-    ],
+    id: "65260e2a0eebb518f177955a",
+    name: "Samsung galaxy s21",
+    brand: {
+      id: "6526007f0eebb518f1779553",
+      name: "Samsung",
+      imageUrl:
+        "https://images.samsung.com/is/image/samsung/assets/us/about-us/brand/logo/mo/360_197_1.png?$FB_TYPE_B_PNG$",
+      description: "Samsung Electronics Co., Ltd.",
+    },
+    description: "A fitness-focused Smartphone with long battery life.",
+    quantity: 25,
+    price: 449.99,
+    imageUrl: ["https://m.media-amazon.com/images/I/61YgX12EuXL.jpg"],
+    operatingSystem: "Android",
+    connectivity: "Bluetooth, wifi",
+    category: {
+      id: "651696c8465464094c44f5d9",
+      name: "Smartphones",
+      description: "Mobile phones with advanced features.",
+    },
   },
   {
-    id: 8,
-    name: "Laptop F6",
-    brand: "BrandZ",
-    description: "Budget-friendly laptop for everyday tasks.",
-    quantity: 18,
-    price: 599.99,
-    imageUrl:
-      "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-space-gray-select-201810?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1664472289661",
-    operatingSystem: "Windows 10",
-    connectivity: "Wi-Fi 5, Bluetooth 4.2",
-    category: { id: 3, name: "Laptop", description: "budget laptops" },
-    reviews: [
-      { id: 11, username: "user11", text: "Great for students.", rating: 4 },
-      { id: 12, username: "user12", text: "Decent performance.", rating: 3 },
-    ],
-    ratings: [
-      { id: 11, stars: 4, count: 6 },
-      { id: 12, stars: 3, count: 5 },
-    ],
+    id: "65260ede0eebb518f177955b",
+    name: "Samsung galaxy book",
+    brand: {
+      id: "6526007f0eebb518f1779553",
+      name: "Samsung",
+      imageUrl:
+        "https://images.samsung.com/is/image/samsung/assets/us/about-us/brand/logo/mo/360_197_1.png?$FB_TYPE_B_PNG$",
+      description: "Samsung Electronics Co., Ltd.",
+    },
+    description: "A fitness-focused Laptops with long battery life.",
+    quantity: 25,
+    price: 1049.99,
+    imageUrl: ["https://m.media-amazon.com/images/I/81Gm69I-LyL.jpg"],
+    operatingSystem: "Android",
+    connectivity: "Bluetooth, wifi",
+    category: {
+      id: "651696e0465464094c44f5da",
+      name: "Laptops",
+      description: "Portable personal computers.",
+    },
   },
   {
-    id: 9,
-    name: "Laptop F6",
-    brand: "BrandZ",
-    description: "Budget-friendly laptop for everyday tasks.",
-    quantity: 18,
-    price: 599.99,
+    id: "65260f760eebb518f177955c",
+    name: "Macbook air 2020",
+    brand: {
+      id: "652600bc0eebb518f1779554",
+      name: "Apple",
+      imageUrl:
+        "https://www.tailorbrands.com/wp-content/uploads/2021/01/apple_logo_1988.jpg",
+      description: "Apple Electronics Co., Ltd.",
+    },
+    description: "A fitness-focused Laptops with long battery life.",
+    quantity: 50,
+    price: 1149.99,
+    imageUrl: [
+      "https://store.storeimages.cdn-apple.com/8567/as-images.apple.com/is/refurb-macbook-air-gold-m1-202010?wid=1144&hei=1144&fmt=jpeg&qlt=90&.v=1634145607000",
+    ],
+    operatingSystem: "MacOS",
+    connectivity: "Bluetooth, wifi",
+    category: {
+      id: "651696e0465464094c44f5da",
+      name: "Laptops",
+      description: "Portable personal computers.",
+    },
+  },
+  {
+    id: "65260fd50eebb518f177955d",
+    name: "iphone 13 pink",
+    brand: {
+      id: "652600bc0eebb518f1779554",
+      name: "Apple",
+      imageUrl:
+        "https://www.tailorbrands.com/wp-content/uploads/2021/01/apple_logo_1988.jpg",
+      description: "Apple Electronics Co., Ltd.",
+    },
+    description: "A fitness-focused iphone with long battery life.",
+    quantity: 50,
+    price: 1149.99,
+    imageUrl: [
+      "https://store.storeimages.cdn-apple.com/8567/as-images.apple.com/is/iphone-13-finish-select-202207-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1693063160403",
+    ],
+    operatingSystem: "IOS",
+    connectivity: "Bluetooth, wifi",
+    category: {
+      id: "651696c8465464094c44f5d9",
+      name: "Smartphones",
+      description: "Mobile phones with advanced features.",
+    },
+  },
+];
+
+export const BrandList = [
+  {
+    id: "6526007f0eebb518f1779553",
+    name: "Samsung",
     imageUrl:
-      "https://store.storeimages.cdn-apple.com/8756/as-images.apple.com/is/macbook-air-space-gray-select-201810?wid=904&hei=840&fmt=jpeg&qlt=90&.v=1664472289661",
-    operatingSystem: "Windows 10",
-    connectivity: "Wi-Fi 5, Bluetooth 4.2",
-    category: { id: 3, name: "Laptop", description: "budget laptops" },
-    reviews: [
-      { id: 11, username: "user11", text: "Great for students.", rating: 4 },
-      { id: 12, username: "user12", text: "Decent performance.", rating: 3 },
-    ],
-    ratings: [
-      { id: 11, stars: 4, count: 6 },
-      { id: 12, stars: 3, count: 5 },
-    ],
+      "https://images.samsung.com/is/image/samsung/assets/us/about-us/brand/logo/mo/360_197_1.png?$FB_TYPE_B_PNG$",
+    description: "Samsung Electronics Co., Ltd.",
+  },
+  {
+    id: "652600bc0eebb518f1779554",
+    name: "Apple",
+    imageUrl:
+      "https://www.tailorbrands.com/wp-content/uploads/2021/01/apple_logo_1988.jpg",
+    description: "Apple Electronics Co., Ltd.",
+  },
+  {
+    id: "652600fe0eebb518f1779555",
+    name: "Xiaomi",
+    imageUrl:
+      "https://logowik.com/content/uploads/images/xiaomi-2021-new4988.jpg",
+    description: "Xiaomi Electronics Co., Ltd.",
+  },
+  {
+    id: "652601980eebb518f1779556",
+    name: "Oppo",
+    imageUrl:
+      "https://upload.wikimedia.org/wikipedia/commons/1/1c/OPPO_LOGO.jpg",
+    description: "Oppo Electronics Co., Ltd.",
   },
 ];

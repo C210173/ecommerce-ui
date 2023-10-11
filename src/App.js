@@ -9,6 +9,10 @@ import RatingManagement from "./pages/admin/RatingManagement";
 import ReviewManagement from "./pages/admin/ReviewManagement";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
+import Home from "./pages/client/Home";
+import Product from "./pages/client/Product";
+import Cart from "./pages/client/Cart";
+import Profile from "./pages/client/Profile";
 
 function App() {
   return (
@@ -22,6 +26,10 @@ function App() {
       <Route path="/admin/review" element={<ReviewManagement />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
+      <Route path="/" element={<Home />} />
+      <Route path="/product" element={<Product />} />
+      <Route path="/cart" element={<Cart />} />
+      <Route path="/profile" element={<Profile />} />
     </Routes>
   );
 }
