@@ -1,10 +1,24 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { FaComputer } from "react-icons/fa6";
+import { BiLogOut } from "react-icons/bi";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserAction, logoutAction } from "../../../redux/Auth/Action";
 
 const HomeNavbar = () => {
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { auth } = useSelector((store) => store);
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token) dispatch(getUserAction(token));
+  }, [token]);
+
+  const handleLogout = () => {
+    dispatch(logoutAction());
+    navigate("/login");
+  };
   return (
     <nav className="max-w-screen-xl mx-auto py-4 flex items-center justify-between">
       <div className="flex items-center space-x-4">
@@ -47,6 +61,12 @@ const HomeNavbar = () => {
           onClick={() => navigate("/profile")}
           className="text-white text-2xl cursor-pointer hover:text-gray-900"
         />
+        {auth.reqUser && (
+          <BiLogOut
+            onClick={handleLogout}
+            className="text-white text-2xl cursor-pointer hover:text-gray-900"
+          />
+        )}
       </div>
     </nav>
   );
