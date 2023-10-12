@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Alert, Snackbar } from "@mui/material";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUserAction, loginAction } from "../../redux/Auth/Action";
+import { getUserAction, loginAction } from "../../redux/auth/Action";
 
 const Login = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);

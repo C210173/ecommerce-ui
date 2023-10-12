@@ -4,7 +4,7 @@ import { BiLogOut } from "react-icons/bi";
 import { FaBell } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUserAction, logoutAction } from "../../../redux/Auth/Action";
+import { getUserAction, logoutAction } from "../../../redux/auth/Action";
 
 const Navbar = () => {
   const navigate = useNavigate();

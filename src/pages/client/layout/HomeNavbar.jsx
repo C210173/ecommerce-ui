@@ -4,7 +4,7 @@ import { FaSearch, FaShoppingCart, FaUser } from "react-icons/fa";
 import { FaComputer } from "react-icons/fa6";
 import { BiLogOut } from "react-icons/bi";
 import { useDispatch, useSelector } from "react-redux";
-import { getUserAction, logoutAction } from "../../../redux/Auth/Action";
+import { getUserAction, logoutAction } from "../../../redux/auth/Action";
 
 const HomeNavbar = () => {
   const navigate = useNavigate();
