@@ -1,17 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FaTrashAlt, FaEdit, FaEye } from "react-icons/fa";
+import { Alert, Snackbar } from "@mui/material";
 import { FiSearch } from "react-icons/fi";
 import DefaultLayout from "./layout/DefaultLayout";
 import Header from "./layout/Header";
 import UserModal from "./components/UserModal";
 import EditRoleModal from "./components/EditRoleModal";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
-import { userList } from "../../dummydata/DummyData";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeRoleUserAction,
+  deleteAccountAction,
+  getAllUserAction,
+} from "../../redux/user/Action";
 
 const UserManagement = () => {
-  // action detail user
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [userDetails, setUserDetails] = useState({});
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [deletingUser, setDeletingUser] = useState(null);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const [editingUser, setEditingUser] = useState({});
+  const { user } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  // action detail user
   const openModal = (user) => {
     setUserDetails(user);
     setIsModalOpen(true);
@@ -21,7 +39,7 @@ const UserManagement = () => {
     setIsModalOpen(false);
   };
   const itemsPerPage = 10; // Số người dùng trên mỗi trang
-  const totalPages = Math.ceil(userList.length / itemsPerPage);
+  const totalPages = Math.ceil(user.allUser?.length / itemsPerPage);
 
   const paginateData = (data, currentPage) => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -29,11 +47,8 @@ const UserManagement = () => {
     return data.slice(startIndex, endIndex);
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const displayedUsers = paginateData(userList, currentPage);
+  const displayedUsers = paginateData(user.allUser, currentPage);
   // action edit role
-  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const [editingUser, setEditingUser] = useState({});
-
   const openEditModal = (user) => {
     setEditingUser(user);
     setIsEditModalOpen(true);
@@ -44,14 +59,21 @@ const UserManagement = () => {
   };
 
   const handleSaveRole = (userId, role) => {
-    // Gửi yêu cầu API hoặc thực hiện cập nhật vai trò ở đây
-    console.log(`User ID: ${userId}, New Role: ${role}`);
-    // Sau khi hoàn thành, bạn có thể cập nhật danh sách người dùng tại đây (nếu cần)
+    dispatch(
+      changeRoleUserAction({
+        token: token,
+        data: {
+          userId: userId,
+          role: role,
+        },
+      })
+    ).then(() => {
+      dispatch(getAllUserAction(token));
+      setSuccessMessage("Edit role successfully!");
+      setOpenSnackbar(true);
+    });
   };
   // action delete
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [deletingUser, setDeletingUser] = useState(null);
-
   const openDeleteModal = (user) => {
     setDeletingUser(user);
     setIsDeleteModalOpen(true);
@@ -63,10 +85,24 @@ const UserManagement = () => {
   };
 
   const handleDeleteUser = (userId) => {
-    // Gửi yêu cầu API hoặc thực hiện xóa người dùng ở đây
-    console.log(`Deleted User ID: ${userId}`);
-    // Sau khi xóa, bạn có thể cập nhật danh sách người dùng tại đây (nếu cần)
+    dispatch(
+      deleteAccountAction({
+        token: token,
+        userId: userId,
+      })
+    ).then(() => {
+      dispatch(getAllUserAction(token)).then(() => {
+        setCurrentPage(1);
+        setSuccessMessage("Delete user successfully!");
+        setOpenSnackbar(true);
+      });
+    });
   };
+
+  useEffect(() => {
+    if (token) dispatch(getAllUserAction(token));
+  }, [token]);
+
   return (
     <DefaultLayout
       children={
@@ -188,6 +224,19 @@ const UserManagement = () => {
               message={`Are you sure you want to delete user ${deletingUser.fullName}`}
             />
           )}
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={3000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              {successMessage}
+            </Alert>
+          </Snackbar>
         </div>
       }
     />

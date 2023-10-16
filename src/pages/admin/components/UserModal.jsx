@@ -20,8 +20,11 @@ const UserModal = ({ user, closeModal }) => {
         <div className="z-50 bg-white flex rounded-lg shadow-lg p-4 h-[50vh] w-[50vw] relative">
           <div className="flex flex-col w-[20vw] items-center justify-center">
             <img
-              className="rounded-full object-cover h-[10vw] w-[10vw]"
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              className="rounded-full border object-cover h-[10vw] w-[10vw]"
+              src={
+                user?.imageUrl ||
+                "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              }
               alt=""
             />
           </div>
@@ -35,12 +38,17 @@ const UserModal = ({ user, closeModal }) => {
             </div>
             <div className="flex">
               <BsFillHouseCheckFill className="text-xl text-blue-400 mt-[0.1rem]" />
-              {user.address?.map((item, index) => (
-                <p key={index} className="ml-3 text-gray-500">
-                  {item.postalCode} : {item.street}, {item.city}, {item.state},{" "}
-                  {item.country}
+              {user?.address ? (
+                <p className="ml-3 text-gray-500">
+                  {user.address?.postalCode} : {user.address?.street},{" "}
+                  {user.address?.city}, {user.address?.state},{" "}
+                  {user.address?.country}
                 </p>
-              ))}
+              ) : (
+                <p className="ml-3 text-gray-500">
+                  Address has not been updated
+                </p>
+              )}
             </div>
             <div className="mt-3">
               <h3 className="text-gray-700">Order history</h3>

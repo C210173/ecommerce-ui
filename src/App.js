@@ -13,6 +13,7 @@ import Home from "./pages/client/Home";
 import Product from "./pages/client/Product";
 import Cart from "./pages/client/Cart";
 import Profile from "./pages/client/Profile";
+import BrandManagement from "./pages/admin/BrandManagement";
 
 function App() {
   return (
@@ -20,6 +21,7 @@ function App() {
       <Route path="/admin/dashboard" element={<Dashboard />} />
       <Route path="/admin/user" element={<UserManagement />} />
       <Route path="/admin/category" element={<CategoryManagement />} />
+      <Route path="/admin/brand" element={<BrandManagement />} />
       <Route path="/admin/product" element={<ProductManagement />} />
       <Route path="/admin/order" element={<OrderManagement />} />
       <Route path="/admin/rating" element={<RatingManagement />} />

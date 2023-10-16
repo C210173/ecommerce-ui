@@ -1,48 +1,47 @@
+import axios from "axios";
 import { BASE_API_URL } from "../../config/api";
 import { LOGIN, LOGOUT, REGISTER, REQ_USER } from "./ActionType";
 
 export const registerAction = (data) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/auth/signup`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    const resData = await res.json();
+    const response = await axios.post(`${BASE_API_URL}/auth/signup`, data);
+    const resData = response.data;
     console.log("register ", resData);
-    dispatch({ type: REGISTER, payload: resData });
+
+    if (resData.jwt) {
+      dispatch({ type: REGISTER, payload: resData });
+    }
+    return resData;
   } catch (error) {
     console.log("error", error);
+    throw error;
   }
 };
 
 export const loginAction = (data) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/auth/signin`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
-    const resData = await res.json();
-    if (resData.jwt) localStorage.setItem("token", resData.jwt);
-
+    const response = await axios.post(`${BASE_API_URL}/auth/signin`, data);
+    const resData = response.data;
     console.log("login ", resData);
-    dispatch({ type: LOGIN, payload: resData });
+    if (resData.jwt) {
+      localStorage.setItem("token", resData.jwt);
+      dispatch({ type: LOGIN, payload: resData });
+    }
+    return resData;
   } catch (error) {
     console.log("error", error);
+    throw error;
   }
 };
 
 export const getUserAction = (token) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/api/users/profile`, {
-      method: "GET",
+    const response = await axios.get(`${BASE_API_URL}/api/users/profile`, {
       headers: {
-        "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
-    const resData = await res.json();
+    const resData = response.data;
     console.log("current user ", resData);
     dispatch({ type: REQ_USER, payload: resData });
   } catch (error) {

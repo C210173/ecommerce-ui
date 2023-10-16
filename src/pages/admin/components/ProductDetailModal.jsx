@@ -1,5 +1,7 @@
 import React from "react";
 import { ImCancelCircle } from "react-icons/im";
+import { Carousel } from "react-responsive-carousel";
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 
 const ProductDetailModal = ({ isOpen, onClose, product }) => {
   if (!isOpen) {
@@ -18,18 +20,26 @@ const ProductDetailModal = ({ isOpen, onClose, product }) => {
         </button>
         <div className="flex h-[60vh]">
           <div className="w-[30vw] flex items-center justify-center rounded-md">
-            <img
-              className="w-full h-full object-cover"
-              src={product.imageUrl}
-              alt=""
-            />
+            <Carousel showStatus={false} showThumbs={false}>
+              {product.imageUrl.map((imageUrl, index) => (
+                <div key={index} className="h-[90%]">
+                  <img
+                    className="w-full h-full object-cover"
+                    src={imageUrl}
+                    alt={`Product ${index + 1}`}
+                  />
+                </div>
+              ))}
+            </Carousel>
           </div>
           <div className="w-[36vw] ml-5 flex flex-col">
             <div className="flex items-center">
               <span className="text-gray-900 text-lg font-semibold">
                 Brand:
               </span>
-              <p className="text-gray-600 text-base ml-4">{product.brand}</p>
+              <p className="text-gray-600 text-base ml-4">
+                {product.brand.name}
+              </p>
             </div>
             <div className="flex items-center">
               <span className="text-gray-900 text-lg font-semibold">

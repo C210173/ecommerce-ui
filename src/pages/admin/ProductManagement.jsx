@@ -1,23 +1,26 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import DefaultLayout from "./layout/DefaultLayout";
 import Header from "./layout/Header";
 import { FiSearch } from "react-icons/fi";
+import { Alert, Snackbar } from "@mui/material";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
-import { categoryList, productList } from "../../dummydata/DummyData";
-import ProductModal from "./components/ProductModal";
 import ProductDetailModal from "./components/ProductDetailModal";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  createProductAction,
+  deleteProductAction,
+  getAllProductAction,
+  updateProductAction,
+} from "../../redux/product/Action";
+import { getAllCategoryAction } from "../../redux/category/Action";
+import { getAllBrandAction } from "../../redux/brand/Action";
+import ProductCreateModal from "./components/ProductCreateModal";
+import ProductEditModal from "./components/ProductEditModal";
 
 const ProductManagement = () => {
-  const itemsPerPage = 8; // Số item trên mỗi trang
-  const [currentPage, setCurrentPage] = useState(1);
-  const paginateData = (data, currentPage) => {
-    const startIndex = (currentPage - 1) * itemsPerPage;
-    const endIndex = startIndex + itemsPerPage;
-    return data.slice(startIndex, endIndex);
-  };
-  const displayedProducts = paginateData(productList, currentPage);
-  const totalPages = Math.ceil(productList.length / itemsPerPage);
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedProduct, setSelectedProduct] = useState(null);
@@ -26,14 +29,34 @@ const ProductManagement = () => {
     useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingProduct, setDeletingProduct] = useState(null);
-
+  const { product, brand, category } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token) {
+      dispatch(getAllProductAction(token));
+      dispatch(getAllBrandAction(token));
+      dispatch(getAllCategoryAction(token));
+    }
+  }, [token]);
+  const itemsPerPage = 8;
+  const [currentPage, setCurrentPage] = useState(1);
+  const paginateData = (data, currentPage) => {
+    const startIndex = (currentPage - 1) * itemsPerPage;
+    const endIndex = startIndex + itemsPerPage;
+    return data.slice(startIndex, endIndex);
+  };
+  const displayedProducts = paginateData(product?.allProduct, currentPage);
+  const totalPages = Math.ceil(product?.allProduct.length / itemsPerPage);
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
   //action create product
   const openCreateModal = () => {
-    setSelectedProduct(null);
     setIsCreateModalOpen(true);
   };
-  const openEditModal = (product) => {
-    setSelectedProduct(product);
+  const openEditModal = (item) => {
+    setSelectedProduct(item);
     setIsEditModalOpen(true);
   };
 
@@ -46,21 +69,40 @@ const ProductManagement = () => {
     }
   };
 
-  const handleCreateOrUpdateProduct = (productData, isEditing) => {
-    if (isEditing) {
-      // Cập nhật sản phẩm
-    } else {
-      // Tạo sản phẩm mới
-    }
+  const handleCreateProduct = (product) => {
+    const productData = {
+      token: token,
+      data: product,
+    };
+    dispatch(createProductAction(productData)).then(() => {
+      dispatch(getAllProductAction(token));
+      onCloseModal();
+      setSuccessMessage("Create product successfully!");
+      setOpenSnackbar(true);
+    });
   };
 
-  const openDetailModal = (product) => {
-    setSelectedProductForDetail(product);
+  const handleEditProduct = (product) => {
+    const productData = {
+      token: token,
+      productId: selectedProduct.id,
+      data: product,
+    };
+    dispatch(updateProductAction(productData)).then(() => {
+      dispatch(getAllProductAction(token));
+      onCloseModal();
+      setSuccessMessage("Update product successfully!");
+      setOpenSnackbar(true);
+    });
+  };
+
+  const openDetailModal = (item) => {
+    setSelectedProductForDetail(item);
     setIsDetailModalOpen(true);
   };
   // action delete
-  const openDeleteModal = (product) => {
-    setDeletingProduct(product);
+  const openDeleteModal = (item) => {
+    setDeletingProduct(item);
     setIsDeleteModalOpen(true);
   };
 
@@ -70,9 +112,16 @@ const ProductManagement = () => {
   };
 
   const handleDeleteUser = (productId) => {
-    // Gửi yêu cầu API hoặc thực hiện xóa người dùng ở đây
-    console.log(`Deleted product ID: ${productId}`);
-    // Sau khi xóa, bạn có thể cập nhật danh sách người dùng tại đây (nếu cần)
+    dispatch(
+      deleteProductAction({
+        token: token,
+        productId: productId,
+      })
+    ).then(() => {
+      dispatch(getAllProductAction(token));
+      setSuccessMessage("delete product successfully!");
+      setOpenSnackbar(true);
+    });
   };
   return (
     <DefaultLayout
@@ -93,9 +142,6 @@ const ProductManagement = () => {
             <table className="min-w-full">
               <thead>
                 <tr>
-                  <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                    ID
-                  </th>
                   <th className="px-3 py-2 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                     Image
                   </th>
@@ -117,35 +163,34 @@ const ProductManagement = () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-100">
-                {displayedProducts.map((product) => (
-                  <tr key={product.id} className="hover:bg-gray-200">
-                    <td className="px-6 py-4">{product.id}</td>
+                {displayedProducts.map((item) => (
+                  <tr key={item.id} className="hover:bg-gray-200">
                     <td className="px-3 py-2">
                       <img
                         className="h-12 w-16 object-cover rounded-md shadow-sm"
-                        src={product.imageUrl}
-                        alt=""
+                        src={item.imageUrl[0]}
+                        alt={item.name}
                       />
                     </td>
-                    <td className="px-6 py-4">{product.name}</td>
-                    <td className="px-6 py-4">{product.brand}</td>
-                    <td className="px-6 py-4">{product.category.name}</td>
-                    <td className="px-6 py-4">{product.quantity}</td>
+                    <td className="px-6 py-4">{item.name}</td>
+                    <td className="px-6 py-4">{item.brand.name}</td>
+                    <td className="px-6 py-4">{item.category.name}</td>
+                    <td className="px-6 py-4">{item.quantity}</td>
                     <td className="px-6 py-4">
                       <button
-                        onClick={() => openDetailModal(product)}
+                        onClick={() => openDetailModal(item)}
                         className="text-indigo-600 hover:text-indigo-900 mr-5"
                       >
                         <FaEye />
                       </button>
                       <button
-                        onClick={() => openEditModal(product)}
+                        onClick={() => openEditModal(item)}
                         className="text-green-600 hover:text-green-900 mr-5"
                       >
                         <FaEdit />
                       </button>
                       <button
-                        onClick={() => openDeleteModal(product)}
+                        onClick={() => openDeleteModal(item)}
                         className="text-red-600 hover:text-red-900"
                       >
                         <FaTrashAlt />
@@ -197,13 +242,20 @@ const ProductManagement = () => {
               Next
             </button>
           </div>
-          <ProductModal
-            isOpen={isCreateModalOpen || isEditModalOpen}
+          <ProductCreateModal
+            isOpen={isCreateModalOpen}
             onClose={onCloseModal}
-            onSubmit={handleCreateOrUpdateProduct}
-            isEditing={isEditModalOpen}
-            product={isEditModalOpen ? selectedProduct : null}
-            categoryList={categoryList}
+            onSubmit={handleCreateProduct}
+            categoryList={category?.allCategory}
+            brandList={brand?.allBrand}
+          />
+          <ProductEditModal
+            isOpen={isEditModalOpen}
+            onClose={onCloseModal}
+            onSubmit={handleEditProduct}
+            product={selectedProduct}
+            categoryList={category?.allCategory}
+            brandList={brand?.allBrand}
           />
           <ProductDetailModal
             isOpen={isDetailModalOpen}
@@ -218,6 +270,19 @@ const ProductManagement = () => {
               message={`Are you sure you want to delete product ${deletingProduct.name}`}
             />
           )}
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={3000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              {successMessage}
+            </Alert>
+          </Snackbar>
         </div>
       }
     />

@@ -1,25 +1,35 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import { RiFeedbackFill } from "react-icons/ri";
 import { FaRankingStar } from "react-icons/fa6";
 import { AiFillHome } from "react-icons/ai";
 import { HiTemplate } from "react-icons/hi";
+import { TbBrandDatabricks } from "react-icons/tb";
 import {
   BsBagPlusFill,
   BsFillBarChartLineFill,
   BsPieChartFill,
 } from "react-icons/bs";
-import {
-  BiCategoryAlt,
-  BiLineChart,
-  BiSolidUserRectangle,
-} from "react-icons/bi";
+import { BiCategoryAlt, BiSolidUserRectangle } from "react-icons/bi";
 import "./Sidebar.css";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserAction } from "../../../redux/auth/Action";
 
 const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const { auth } = useSelector((store) => store);
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token) dispatch(getUserAction(token));
+  }, [token]);
+  useEffect(() => {
+    if (auth.reqUser?.role !== "ADMIN") {
+      navigate("/login");
+    }
+  }, [auth.reqUser]);
   const sidebarClass = isSidebarOpen ? "sidebar-open" : "sidebar-closed";
 
   return (
@@ -45,15 +55,18 @@ const Sidebar = () => {
             className={`rounded-full object-cover ${
               isSidebarOpen ? "h-[10vw] w-[10vw] " : "h-[3vw] w-[3vw] mt-20"
             }`}
-            src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            src={
+              auth.reqUser?.imageUrl ||
+              "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+            }
             alt=""
           />
           <p
-            className={`text-xs mt-5 ${
+            className={`text-xs mt-5 uppercase ${
               isSidebarOpen ? "text-white " : "text-transparent"
             }`}
           >
-            USERNAME
+            {auth.reqUser?.fullName}
           </p>
         </div>
       </div>
@@ -86,6 +99,13 @@ const Sidebar = () => {
           {isSidebarOpen ? (
             <p className="text-white text-sx">Category</p>
           ) : null}
+        </div>
+        <div
+          onClick={() => navigate("/admin/brand")}
+          className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500"
+        >
+          <TbBrandDatabricks className="text-xl text-white mx-3" />
+          {isSidebarOpen ? <p className="text-white text-sx">Brand</p> : null}
         </div>
         <div
           onClick={() => navigate("/admin/product")}
@@ -125,12 +145,6 @@ const Sidebar = () => {
           <BsPieChartFill className="text-xl text-white mx-3" />
           {isSidebarOpen ? (
             <p className="text-white text-sx">Piechart</p>
-          ) : null}
-        </div>
-        <div className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500">
-          <BiLineChart className="text-xl text-white mx-3" />
-          {isSidebarOpen ? (
-            <p className="text-white text-sx">Linechart</p>
           ) : null}
         </div>
       </div>

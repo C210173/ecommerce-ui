@@ -1,3 +1,4 @@
+import axios from "axios";
 import { BASE_API_URL } from "../../config/api";
 import {
   CREATE_PRODUCT,
@@ -8,15 +9,17 @@ import {
 
 export const createProductAction = (productData) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/api/admin/products/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${productData.token}`,
-      },
-      body: JSON.stringify(productData.data),
-    });
-    const resData = await res.json();
+    const response = await axios.post(
+      `${BASE_API_URL}/api/admin/products/create`,
+      productData.data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${productData.token}`,
+        },
+      }
+    );
+    const resData = response.data;
     console.log("create product", resData);
     dispatch({ type: CREATE_PRODUCT, payload: resData });
   } catch (error) {
@@ -26,14 +29,13 @@ export const createProductAction = (productData) => async (dispatch) => {
 
 export const getAllProductAction = (token) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/api/admin/products/all`, {
-      method: "GET",
+    const response = await axios.get(`${BASE_API_URL}/api/admin/products/all`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
-    const resData = await res.json();
+    const resData = response.data;
     console.log("all product ", resData);
     dispatch({ type: GET_ALL_PRODUCT, payload: resData });
   } catch (error) {
@@ -43,18 +45,17 @@ export const getAllProductAction = (token) => async (dispatch) => {
 
 export const updateProductAction = (productData) => async (dispatch) => {
   try {
-    const res = await fetch(
+    const response = await axios.put(
       `${BASE_API_URL}/api/admin/products/${productData.productId}/update`,
+      productData.data,
       {
-        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${productData.token}`,
         },
-        body: JSON.stringify(productData.data),
       }
     );
-    const resData = await res.json();
+    const resData = response.data;
     console.log("update product ", resData);
     dispatch({ type: UPDATE_PRODUCT, payload: resData });
   } catch (error) {
@@ -64,17 +65,16 @@ export const updateProductAction = (productData) => async (dispatch) => {
 
 export const deleteProductAction = (productData) => async (dispatch) => {
   try {
-    const res = await fetch(
+    const response = await axios.delete(
       `${BASE_API_URL}/api/admin/products/${productData.productId}/delete`,
       {
-        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${productData.token}`,
         },
       }
     );
-    const resData = await res.json();
+    const resData = response.data;
     console.log("delete product ", resData);
     dispatch({ type: DELETE_PRODUCT, payload: resData });
   } catch (error) {

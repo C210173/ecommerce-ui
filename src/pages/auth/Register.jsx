@@ -1,147 +1,140 @@
 import React, { useState } from "react";
-import { Alert, Snackbar } from "@mui/material";
+import { Alert, Button, Snackbar, TextField } from "@mui/material";
+import { useFormik } from "formik";
+import * as yup from "yup";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { registerAction } from "../../redux/auth/Action";
 
+const phoneRegExp =
+  /^((\\+[1-9]{1,4}[ \\-]*)|(\\([0-9]{2,3}\\)[ \\-]*)|([0-9]{2,4})[ \\-]*)*?[0-9]{3,4}?[ \\-]*[0-9]{3,4}?$/;
+
+const validationSchema = yup.object({
+  fullName: yup
+    .string("Enter your full Name")
+    .max(15, "Must be 15 characters or less")
+    .required("Full name is Required"),
+  email: yup
+    .string("Enter your email")
+    .email("Enter a valid email")
+    .required("Email is required"),
+  password: yup
+    .string("Enter your password")
+    .min(8, "Password should be of minimum 8 characters length")
+    .required("Password is required"),
+  phoneNumber: yup
+    .string()
+    .required("Phone number is required")
+    .matches(phoneRegExp, "Phone number is not valid")
+    .min(10, "too short")
+    .max(11, "too long"),
+});
+
 const Register = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
+  const [error, setError] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
   };
 
-  const [inputData, setInputData] = useState({
-    fullName: "",
-    email: "",
-    password: "",
-    phoneNumber: "",
+  const formik = useFormik({
+    initialValues: {
+      fullName: "",
+      email: "",
+      password: "",
+      phoneNumber: "",
+    },
+    validationSchema: validationSchema,
+    onSubmit: async (e) => {
+      try {
+        const resData = await dispatch(registerAction(e));
+        if (resData && resData.jwt) {
+          setError(false);
+          setMessage("Account created successfully!");
+          setOpenSnackbar(true);
+        }
+      } catch (error) {
+        const response = error.response;
+        if (response && response.data) {
+          setError(true);
+          setMessage(response.data.message);
+        } else {
+          setError(true);
+          setMessage("An error occurred");
+        }
+        setOpenSnackbar(true);
+      }
+    },
   });
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (inputData.password !== inputData.confirmPassword) {
-      setPasswordError("* do not match");
-      return;
-    } else {
-      setPasswordError("");
-    }
-    const { confirmPassword, ...registrationData } = inputData;
-
-    dispatch(registerAction(registrationData));
-    setOpenSnackbar(true);
-  };
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setInputData((values) => ({ ...values, [name]: value }));
-  };
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-violet-500 to-fuchsia-500">
-      <div className="max-w-md w-full p-6 bg-transparent rounded-lg shadow-2xl">
+      <div className="max-w-md w-full p-6 bg-white rounded-lg">
         <h2 className="text-2xl font-semibold mb-6 text-center">Register</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label
-              htmlFor="email"
-              className="block text-gray-900 text-sm font-bold mb-2"
-            >
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              onChange={(e) => handleChange(e)}
-              value={inputData.email}
-              className="px-4 py-2 rounded-lg border-2 border-gray-300 focus:outline-none w-full"
-              placeholder="Email Address"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="password"
-              className="block text-gray-900 text-sm font-bold mb-2"
-            >
-              Password
-            </label>
-            <input
-              type="password"
-              id="password"
-              name="password"
-              onChange={(e) => handleChange(e)}
-              value={inputData.password}
-              className="px-4 py-2 rounded-lg border-2 border-gray-300 focus:outline-none w-full"
-              placeholder="Password"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="confirmPassword"
-              className=" text-gray-900 text-sm font-bold mb-2 flex"
-            >
-              Confirm Password
-              {passwordError && (
-                <p className="text-white font-light pl-3">{passwordError}</p>
-              )}
-            </label>
-            <input
-              type="password"
-              id="confirmPassword"
-              name="confirmPassword"
-              onChange={(e) => handleChange(e)}
-              value={inputData.confirmPassword}
-              className="px-4 py-2 rounded-lg border-2 border-gray-300 focus:outline-none w-full"
-              placeholder="Confirm Password"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="fullName"
-              className="block text-gray-900 text-sm font-bold mb-2"
-            >
-              Full Name
-            </label>
-            <input
-              type="text"
-              id="fullName"
-              name="fullName"
-              onChange={(e) => handleChange(e)}
-              value={inputData.fullName}
-              className="px-4 py-2 rounded-lg border-2 border-gray-300 focus:outline-none w-full"
-              placeholder="Full Name"
-              required
-            />
-          </div>
-          <div className="mb-4">
-            <label
-              htmlFor="phoneNumber"
-              className="block text-gray-900 text-sm font-bold mb-2"
-            >
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phoneNumber"
-              name="phoneNumber"
-              onChange={(e) => handleChange(e)}
-              value={inputData.phoneNumber}
-              className="px-4 py-2 rounded-lg border-2 border-gray-300 focus:outline-none w-full"
-              placeholder="Phone Number"
-              required
-            />
-          </div>
-          <button
+        <form onSubmit={formik.handleSubmit}>
+          <TextField
+            fullWidth
+            margin="normal"
+            id="email"
+            name="email"
+            label="Email"
+            value={formik.values.email}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.email && Boolean(formik.errors.email)}
+            helperText={formik.touched.email && formik.errors.email}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="fullName"
+            name="fullName"
+            label="Full Name"
+            value={formik.values.fullName}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.fullName && Boolean(formik.errors.fullName)}
+            helperText={formik.touched.fullName && formik.errors.fullName}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="password"
+            name="password"
+            label="Password"
+            type="password"
+            value={formik.values.password}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={formik.touched.password && Boolean(formik.errors.password)}
+            helperText={formik.touched.password && formik.errors.password}
+          />
+          <TextField
+            fullWidth
+            margin="normal"
+            id="phoneNumber"
+            name="phoneNumber"
+            label="Phone Number"
+            value={formik.values.phoneNumber}
+            onChange={formik.handleChange}
+            onBlur={formik.handleBlur}
+            error={
+              formik.touched.phoneNumber && Boolean(formik.errors.phoneNumber)
+            }
+            helperText={formik.touched.phoneNumber && formik.errors.phoneNumber}
+          />
+          <Button
+            color="primary"
+            variant="contained"
+            fullWidth
+            sx={{ mt: 2 }}
             type="submit"
-            className="bg-gradient-to-t from-sky-500 to-indigo-500 hover:bg-gradient-to-b text-gray-200 text-xl py-2 px-4 rounded-lg w-full mt-2"
           >
             Register
-          </button>
+          </Button>
         </form>
         <div className="mt-4 text-center">
           <span className="text-gray-800">Already have an account? </span>
@@ -158,13 +151,23 @@ const Register = () => {
         autoHideDuration={5000}
         onClose={handleSnackbarClose}
       >
-        <Alert
-          onClose={handleSnackbarClose}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
-          Create Account success!
-        </Alert>
+        {error ? (
+          <Alert
+            onClose={handleSnackbarClose}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {message}
+          </Alert>
+        ) : (
+          <Alert
+            onClose={handleSnackbarClose}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            {message}
+          </Alert>
+        )}
       </Snackbar>
     </div>
   );

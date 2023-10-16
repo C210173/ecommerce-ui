@@ -13,10 +13,13 @@ import { AiFillShopping, AiTwotoneGold } from "react-icons/ai";
 import { FaRankingStar } from "react-icons/fa6";
 import { RiChatPollFill } from "react-icons/ri";
 import CanvasJSReact from "@canvasjs/react-charts";
+import { useSelector } from "react-redux";
 
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Dashboard = () => {
+  const { auth } = useSelector((store) => store);
+  const token = localStorage.getItem("token");
   const bar = {
     theme: "dark2",
     title: {

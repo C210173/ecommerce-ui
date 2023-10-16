@@ -1,3 +1,4 @@
+import axios from "axios";
 import { BASE_API_URL } from "../../config/api";
 import {
   CREATE_CATEGORY,
@@ -8,15 +9,17 @@ import {
 
 export const createCategoryAction = (categoryData) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/api/admin/categories/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${categoryData.token}`,
-      },
-      body: JSON.stringify(categoryData.data),
-    });
-    const resData = await res.json();
+    const response = await axios.post(
+      `${BASE_API_URL}/api/admin/categories/create`,
+      categoryData.data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${categoryData.token}`,
+        },
+      }
+    );
+    const resData = response.data;
     console.log("create category", resData);
     dispatch({ type: CREATE_CATEGORY, payload: resData });
   } catch (error) {
@@ -26,14 +29,16 @@ export const createCategoryAction = (categoryData) => async (dispatch) => {
 
 export const getAllCategoryAction = (token) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/api/admin/categories/all`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
-    const resData = await res.json();
+    const response = await axios.get(
+      `${BASE_API_URL}/api/admin/categories/all`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    const resData = response.data;
     console.log("all category ", resData);
     dispatch({ type: GET_ALL_CATEGORY, payload: resData });
   } catch (error) {
@@ -43,18 +48,17 @@ export const getAllCategoryAction = (token) => async (dispatch) => {
 
 export const updateCategoryAction = (categoryData) => async (dispatch) => {
   try {
-    const res = await fetch(
+    const response = await axios.put(
       `${BASE_API_URL}/api/admin/categories/${categoryData.categoryId}/update`,
+      categoryData.data,
       {
-        method: "PUT",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${categoryData.token}`,
         },
-        body: JSON.stringify(categoryData.data),
       }
     );
-    const resData = await res.json();
+    const resData = response.data;
     console.log("update category ", resData);
     dispatch({ type: UPDATE_CATEGORY, payload: resData });
   } catch (error) {
@@ -64,17 +68,16 @@ export const updateCategoryAction = (categoryData) => async (dispatch) => {
 
 export const deleteCategoryAction = (categoryData) => async (dispatch) => {
   try {
-    const res = await fetch(
+    const response = await axios.delete(
       `${BASE_API_URL}/api/admin/categories/${categoryData.categoryId}/delete`,
       {
-        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${categoryData.token}`,
         },
       }
     );
-    const resData = await res.json();
+    const resData = response.data;
     console.log("delete category ", resData);
     dispatch({ type: DELETE_CATEGORY, payload: resData });
   } catch (error) {

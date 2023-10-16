@@ -1,24 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { AiOutlineSetting } from "react-icons/ai";
 import { BiLogOut } from "react-icons/bi";
 import { FaBell } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { getUserAction, logoutAction } from "../../../redux/auth/Action";
+import { logoutAction } from "../../../redux/auth/Action";
 
 const Navbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { auth } = useSelector((store) => store);
-  const token = localStorage.getItem("token");
-  useEffect(() => {
-    if (token) dispatch(getUserAction(token));
-  }, [token]);
-  useEffect(() => {
-    if (auth.reqUser?.role !== "ADMIN") {
-      navigate("/login");
-    }
-  }, [auth.reqUser]);
 
   const handleLogout = () => {
     dispatch(logoutAction());

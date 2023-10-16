@@ -1,3 +1,4 @@
+import axios from "axios";
 import { BASE_API_URL } from "../../config/api";
 import {
   CREATE_REVIEW,
@@ -9,15 +10,17 @@ import {
 
 export const createReviewAction = (reviewData) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/api/reviews/create`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${reviewData.token}`,
-      },
-      body: JSON.stringify(reviewData.data),
-    });
-    const resData = await res.json();
+    const response = await axios.post(
+      `${BASE_API_URL}/api/reviews/create`,
+      reviewData.data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${reviewData.token}`,
+        },
+      }
+    );
+    const resData = response.data;
     console.log("create review", resData);
     dispatch({ type: CREATE_REVIEW, payload: resData });
   } catch (error) {
@@ -27,14 +30,13 @@ export const createReviewAction = (reviewData) => async (dispatch) => {
 
 export const getAllReviewAction = (token) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/api/reviews/all`, {
-      method: "GET",
+    const response = await axios.get(`${BASE_API_URL}/api/reviews/all`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
-    const resData = await res.json();
+    const resData = response.data;
     console.log("all review ", resData);
     dispatch({ type: GET_ALL_REVIEW, payload: resData });
   } catch (error) {
@@ -44,17 +46,16 @@ export const getAllReviewAction = (token) => async (dispatch) => {
 
 export const getProductReviewAction = (reviewData) => async (dispatch) => {
   try {
-    const res = await fetch(
+    const response = await axios.get(
       `${BASE_API_URL}/api/reviews/${reviewData.productId}`,
       {
-        method: "GET",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${reviewData.token}`,
         },
       }
     );
-    const resData = await res.json();
+    const resData = response.data;
     console.log("product review ", resData);
     dispatch({ type: GET_PRODUCT_REVIEW, payload: resData });
   } catch (error) {
@@ -62,16 +63,16 @@ export const getProductReviewAction = (reviewData) => async (dispatch) => {
   }
 };
 
+// Thay đổi getUserReviewAction
 export const getUserReviewAction = (token) => async (dispatch) => {
   try {
-    const res = await fetch(`${BASE_API_URL}/api/reviews/user`, {
-      method: "GET",
+    const response = await axios.get(`${BASE_API_URL}/api/reviews/user`, {
       headers: {
         "Content-Type": "application/json",
         Authorization: `Bearer ${token}`,
       },
     });
-    const resData = await res.json();
+    const resData = response.data;
     console.log("user review ", resData);
     dispatch({ type: GET_USER_REVIEW, payload: resData });
   } catch (error) {
@@ -81,17 +82,16 @@ export const getUserReviewAction = (token) => async (dispatch) => {
 
 export const deleteReviewAction = (reviewData) => async (dispatch) => {
   try {
-    const res = await fetch(
+    const response = await axios.delete(
       `${BASE_API_URL}/api/reviews/${reviewData.reviewId}`,
       {
-        method: "DELETE",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${reviewData.token}`,
         },
       }
     );
-    const resData = await res.json();
+    const resData = response.data;
     console.log("delete review ", resData);
     dispatch({ type: DELETE_REVIEW, payload: resData });
   } catch (error) {
