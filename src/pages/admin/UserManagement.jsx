@@ -26,7 +26,7 @@ const UserManagement = () => {
   const [deletingUser, setDeletingUser] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [editingUser, setEditingUser] = useState({});
-  const { user } = useSelector((store) => store);
+  const allUser = useSelector((store) => store.user.allUser);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   // action detail user
@@ -39,7 +39,7 @@ const UserManagement = () => {
     setIsModalOpen(false);
   };
   const itemsPerPage = 10; // Số người dùng trên mỗi trang
-  const totalPages = Math.ceil(user.allUser?.length / itemsPerPage);
+  const totalPages = Math.ceil(allUser?.length / itemsPerPage);
 
   const paginateData = (data, currentPage) => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -47,7 +47,7 @@ const UserManagement = () => {
     return data.slice(startIndex, endIndex);
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const displayedUsers = paginateData(user.allUser, currentPage);
+  const displayedUsers = paginateData(allUser, currentPage);
   // action edit role
   const openEditModal = (user) => {
     setEditingUser(user);
@@ -101,6 +101,7 @@ const UserManagement = () => {
 
   useEffect(() => {
     if (token) dispatch(getAllUserAction(token));
+    // eslint-disable-next-line
   }, [token]);
 
   return (
@@ -123,7 +124,7 @@ const UserManagement = () => {
               <thead>
                 <tr>
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                    ID
+                    Avatar
                   </th>
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                     Name
@@ -142,7 +143,16 @@ const UserManagement = () => {
               <tbody className="bg-gray-100">
                 {displayedUsers.map((user) => (
                   <tr key={user.id} className="hover:bg-gray-200">
-                    <td className="px-6 py-4">{user.id}</td>
+                    <td className="px-6">
+                      <img
+                        className="rounded-full object-cover h-[3vw] w-[3vw]"
+                        src={
+                          user.imageUrl ||
+                          "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                        }
+                        alt=""
+                      />
+                    </td>
                     <td className="px-6 py-4">{user.fullName}</td>
                     <td className="px-6 py-4">{user.email}</td>
                     <td className="px-6 py-4">{user.role}</td>

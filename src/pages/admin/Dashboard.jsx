@@ -1,25 +1,35 @@
-import React from "react";
+import React, { useEffect } from "react";
 import DefaultLayout from "./layout/DefaultLayout";
 import Header from "./layout/Header";
-import {
-  orderList,
-  productList,
-  ratingList,
-  reviewList,
-  userList,
-} from "../../dummydata/DummyData";
 import { FaUser } from "react-icons/fa";
 import { AiFillShopping, AiTwotoneGold } from "react-icons/ai";
 import { FaRankingStar } from "react-icons/fa6";
 import { RiChatPollFill } from "react-icons/ri";
 import CanvasJSReact from "@canvasjs/react-charts";
-import { useSelector } from "react-redux";
-
+import { useDispatch, useSelector } from "react-redux";
+import { getAllProductAction } from "../../redux/product/Action";
+import { getAllUserAction } from "../../redux/user/Action";
+import { getAllReviewAction } from "../../redux/review/Action";
+import { getAllOrderAction } from "../../redux/order/Action";
 var CanvasJSChart = CanvasJSReact.CanvasJSChart;
 
 const Dashboard = () => {
-  const { auth } = useSelector((store) => store);
+  const dispatch = useDispatch();
+  const allProduct = useSelector((store) => store.product.allProduct);
+  const allUser = useSelector((store) => store.user.allUser);
+  const allOrder = useSelector((store) => store.order.allOrder);
+  const allReview = useSelector((store) => store.review.allReview);
   const token = localStorage.getItem("token");
+  useEffect(() => {
+    if (token) {
+      dispatch(getAllProductAction(token));
+      dispatch(getAllUserAction(token));
+      dispatch(getAllReviewAction(token));
+      dispatch(getAllOrderAction(token));
+    }
+    // eslint-disable-next-line
+  }, [token]);
+
   const bar = {
     theme: "dark2",
     title: {
@@ -79,7 +89,7 @@ const Dashboard = () => {
                   <span className="text-gray-900 font-bold">User</span>
                   <div className="flex justify-between">
                     <p className="text-gray-900 font-semibold">total user:</p>
-                    <p className="text-gray-700 ml-3">{userList.length}</p>
+                    <p className="text-gray-700 ml-3">{allUser.length}</p>
                   </div>
                 </div>
               </div>
@@ -91,7 +101,7 @@ const Dashboard = () => {
                     <p className="text-gray-900 font-semibold">
                       total product:
                     </p>
-                    <p className="text-gray-700 ml-3">{productList.length}</p>
+                    <p className="text-gray-700 ml-3">{allProduct.length}</p>
                   </div>
                 </div>
               </div>
@@ -101,7 +111,7 @@ const Dashboard = () => {
                   <span className="text-gray-900 font-bold">Order</span>
                   <div className="flex justify-between">
                     <p className="text-gray-900 font-semibold">total order:</p>
-                    <p className="text-gray-700 ml-3">{orderList.length}</p>
+                    <p className="text-gray-700 ml-3">{allOrder.length}</p>
                   </div>
                 </div>
               </div>
@@ -111,7 +121,7 @@ const Dashboard = () => {
                   <span className="text-gray-900 font-bold">Rating</span>
                   <div className="flex justify-between">
                     <p className="text-gray-900 font-semibold">total rating:</p>
-                    <p className="text-gray-700 ml-3">{ratingList.length}</p>
+                    <p className="text-gray-700 ml-3">{allReview.length}</p>
                   </div>
                 </div>
               </div>
@@ -121,7 +131,7 @@ const Dashboard = () => {
                   <span className="text-gray-900 font-bold">Review</span>
                   <div className="flex justify-between">
                     <p className="text-gray-900 font-semibold">total review:</p>
-                    <p className="text-gray-700 ml-3">{reviewList.length}</p>
+                    <p className="text-gray-700 ml-3">{allReview.length}</p>
                   </div>
                 </div>
               </div>

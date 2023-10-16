@@ -13,6 +13,7 @@ const HomeNavbar = () => {
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token) dispatch(getUserAction(token));
+    // eslint-disable-next-line
   }, [token]);
 
   const handleLogout = () => {

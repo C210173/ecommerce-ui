@@ -20,16 +20,25 @@ const Sidebar = () => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const { auth } = useSelector((store) => store);
+  const reqUser = useSelector((store) => store.auth.reqUser);
   const token = localStorage.getItem("token");
   useEffect(() => {
-    if (token) dispatch(getUserAction(token));
+    const fetchUserData = async () => {
+      try {
+        if (token) {
+          const user = await dispatch(getUserAction(token));
+          if (user && user.role !== "ADMIN") {
+            navigate("/login");
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      }
+    };
+
+    fetchUserData();
+    // eslint-disable-next-line
   }, [token]);
-  useEffect(() => {
-    if (auth.reqUser?.role !== "ADMIN") {
-      navigate("/login");
-    }
-  }, [auth.reqUser]);
   const sidebarClass = isSidebarOpen ? "sidebar-open" : "sidebar-closed";
 
   return (
@@ -56,7 +65,7 @@ const Sidebar = () => {
               isSidebarOpen ? "h-[10vw] w-[10vw] " : "h-[3vw] w-[3vw] mt-20"
             }`}
             src={
-              auth.reqUser?.imageUrl ||
+              reqUser?.imageUrl ||
               "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
             }
             alt=""
@@ -66,7 +75,7 @@ const Sidebar = () => {
               isSidebarOpen ? "text-white " : "text-transparent"
             }`}
           >
-            {auth.reqUser?.fullName}
+            {reqUser?.fullName}
           </p>
         </div>
       </div>

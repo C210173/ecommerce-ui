@@ -4,6 +4,7 @@ import DefaultLayout from "./layout/DefaultLayout";
 import Header from "./layout/Header";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
 import { useDispatch, useSelector } from "react-redux";
+import { Alert, Snackbar } from "@mui/material";
 import {
   createCategoryAction,
   deleteCategoryAction,
@@ -12,17 +13,24 @@ import {
 } from "../../redux/category/Action";
 
 const CategoryManagement = () => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingCategory, setDeletingCategory] = useState(null);
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState(null);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
-  const { category } = useSelector((store) => store);
+  const allCategory = useSelector((store) => store.category.allCategory);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token) dispatch(getAllCategoryAction(token));
+    // eslint-disable-next-line
   }, [token]);
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
 
   // action delete
   const openDeleteModal = (category) => {
@@ -42,6 +50,8 @@ const CategoryManagement = () => {
     ).then(() => {
       dispatch(getAllCategoryAction(token));
     });
+    setSuccessMessage("delete category successfully!");
+    setOpenSnackbar(true);
   };
 
   //action create new category
@@ -66,6 +76,8 @@ const CategoryManagement = () => {
     });
     closeCreateModal();
     setNewCategory({ name: "", description: "" });
+    setSuccessMessage("create category successfully!");
+    setOpenSnackbar(true);
   };
   // action update category
   const openEditModal = (category) => {
@@ -90,6 +102,8 @@ const CategoryManagement = () => {
       dispatch(getAllCategoryAction(token));
     });
     closeEditModal();
+    setSuccessMessage("Update category successfully!");
+    setOpenSnackbar(true);
   };
 
   return (
@@ -124,7 +138,7 @@ const CategoryManagement = () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-100">
-                {category?.allCategory.map((category) => (
+                {allCategory.map((category) => (
                   <tr key={category.id} className="hover:bg-gray-200">
                     <td className="px-6 py-4">{category.id}</td>
                     <td className="px-6 py-4">{category.name}</td>
@@ -246,6 +260,19 @@ const CategoryManagement = () => {
               </div>
             </div>
           )}
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={3000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              {successMessage}
+            </Alert>
+          </Snackbar>
         </div>
       }
     />

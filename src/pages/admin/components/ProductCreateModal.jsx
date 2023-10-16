@@ -28,6 +28,7 @@ const ProductCreateModal = ({
     if (isOpen) {
       setFormData(initialFormData);
     }
+    // eslint-disable-next-line
   }, [isOpen]);
 
   const handleInputChange = (e, field) => {
@@ -46,7 +47,6 @@ const ProductCreateModal = ({
     const selectedImage = e.target.files[0];
     if (selectedImage && selectedImage.type.startsWith("image/")) {
       const imageUrl = await uploadToCloudinary(selectedImage);
-      // Tạo một bản sao mới của mảng imageUrl và thêm imageUrl mới vào nó
       setFormData({
         ...formData,
         imageUrl: [...formData.imageUrl, imageUrl],

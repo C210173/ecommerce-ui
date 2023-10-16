@@ -11,8 +11,11 @@ import {
 } from "../../redux/brand/Action";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
 import { uploadToCloudinary } from "../../config/UploadToCloudinary";
+import { Alert, Snackbar } from "@mui/material";
 
 const BrandManagement = () => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [successMessage, setSuccessMessage] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -25,15 +28,17 @@ const BrandManagement = () => {
     name: "",
     description: "",
   });
-
-  const { brand } = useSelector((store) => store);
+  const allBrand = useSelector((store) => store.brand.allBrand);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
 
   useEffect(() => {
     if (token) dispatch(getAllBrandAction(token));
+    // eslint-disable-next-line
   }, [token]);
-
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
   const handleChangeImage = async (e) => {
     const file = e.target.files[0];
     if (file && file.type.startsWith("image/")) {
@@ -64,6 +69,8 @@ const BrandManagement = () => {
     ).then(() => {
       dispatch(getAllBrandAction(token));
     });
+    setSuccessMessage("Delete brand successfully!");
+    setOpenSnackbar(true);
   };
   // action update brand
   const openEditModal = (brand) => {
@@ -94,6 +101,8 @@ const BrandManagement = () => {
     });
     setImageURL("");
     closeEditModal();
+    setSuccessMessage("Update Brand successfully!");
+    setOpenSnackbar(true);
   };
   //action create brand
   const openCreateModal = () => {
@@ -117,6 +126,8 @@ const BrandManagement = () => {
 
     setNewBrand({ imageUrl: "", name: "", description: "" });
     closeCreateModal();
+    setSuccessMessage("create brand successfully!");
+    setOpenSnackbar(true);
   };
   return (
     <DefaultLayout
@@ -153,7 +164,7 @@ const BrandManagement = () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-100">
-                {brand?.allBrand.map((brand) => (
+                {allBrand.map((brand) => (
                   <tr key={brand.id} className="hover:bg-gray-200">
                     <td className="px-6 py-4">{brand.id}</td>
                     <td className="px-3 py-2">
@@ -292,6 +303,19 @@ const BrandManagement = () => {
               </div>
             </div>
           )}
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={3000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              {successMessage}
+            </Alert>
+          </Snackbar>
         </div>
       }
     />

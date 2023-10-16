@@ -29,7 +29,9 @@ const ProductManagement = () => {
     useState(null);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingProduct, setDeletingProduct] = useState(null);
-  const { product, brand, category } = useSelector((store) => store);
+  const allProduct = useSelector((store) => store.product.allProduct);
+  const allBrand = useSelector((store) => store.brand.allBrand);
+  const allCategory = useSelector((store) => store.category.allCategory);
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   useEffect(() => {
@@ -38,6 +40,7 @@ const ProductManagement = () => {
       dispatch(getAllBrandAction(token));
       dispatch(getAllCategoryAction(token));
     }
+    // eslint-disable-next-line
   }, [token]);
   const itemsPerPage = 8;
   const [currentPage, setCurrentPage] = useState(1);
@@ -46,8 +49,8 @@ const ProductManagement = () => {
     const endIndex = startIndex + itemsPerPage;
     return data.slice(startIndex, endIndex);
   };
-  const displayedProducts = paginateData(product?.allProduct, currentPage);
-  const totalPages = Math.ceil(product?.allProduct.length / itemsPerPage);
+  const displayedProducts = paginateData(allProduct, currentPage);
+  const totalPages = Math.ceil(allProduct.length / itemsPerPage);
   const handleSnackbarClose = () => {
     setOpenSnackbar(false);
   };
@@ -246,16 +249,16 @@ const ProductManagement = () => {
             isOpen={isCreateModalOpen}
             onClose={onCloseModal}
             onSubmit={handleCreateProduct}
-            categoryList={category?.allCategory}
-            brandList={brand?.allBrand}
+            categoryList={allCategory}
+            brandList={allBrand}
           />
           <ProductEditModal
             isOpen={isEditModalOpen}
             onClose={onCloseModal}
             onSubmit={handleEditProduct}
             product={selectedProduct}
-            categoryList={category?.allCategory}
-            brandList={brand?.allBrand}
+            categoryList={allCategory}
+            brandList={allBrand}
           />
           <ProductDetailModal
             isOpen={isDetailModalOpen}

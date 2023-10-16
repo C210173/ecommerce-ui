@@ -58,6 +58,7 @@ const Login = () => {
   };
   useEffect(() => {
     if (token) dispatch(getUserAction(token));
+    // eslint-disable-next-line
   }, [token]);
   useEffect(() => {
     if (reqUser?.role === "ADMIN") {
@@ -65,6 +66,7 @@ const Login = () => {
     } else if (reqUser?.role === "USER") {
       navigate("/");
     }
+    // eslint-disable-next-line
   }, [reqUser]);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-violet-500 to-fuchsia-500">

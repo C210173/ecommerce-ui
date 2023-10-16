@@ -44,8 +44,10 @@ export const getUserAction = (token) => async (dispatch) => {
     const resData = response.data;
     console.log("current user ", resData);
     dispatch({ type: REQ_USER, payload: resData });
+    return resData;
   } catch (error) {
     console.log("error", error);
+    throw error;
   }
 };
 

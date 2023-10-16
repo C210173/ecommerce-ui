@@ -28,6 +28,7 @@ const ProductEditModal = ({
     if (isOpen) {
       setFormData(initialFormData);
     }
+    // eslint-disable-next-line
   }, [isOpen, product]);
 
   const handleInputChange = (e, field) => {
@@ -54,8 +55,6 @@ const ProductEditModal = ({
       alert("Please select an image");
     }
   };
-  console.log("formdata", formData);
-
   const handleSubmit = () => {
     onSubmit(formData);
     onClose();
