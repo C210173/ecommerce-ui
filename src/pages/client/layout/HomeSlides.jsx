@@ -46,13 +46,13 @@ const HomeSlides = () => {
         ))}
       </div>
       <button
-        className="absolute top-1/2 left-[-0.5rem] transform -translate-y-1/2 bg-transparent hover:bg-slate-400 rounded-md p-1 py-3"
+        className="absolute top-1/2 left-[-0.5rem] transform -translate-y-1/2 bg-transparent  rounded-md p-1 py-3"
         onClick={prevSlide}
       >
         <GrPrevious className="text-2xl text-white" />
       </button>
       <button
-        className="absolute top-1/2 right-[-0.5rem] transform -translate-y-1/2 bg-transparent hover:bg-slate-400 rounded-md px-1 py-3"
+        className="absolute top-1/2 right-[-0.5rem] transform -translate-y-1/2 bg-transparent rounded-md px-1 py-3"
         onClick={nextSlide}
       >
         <GrNext className="text-2xl text-white" />
