@@ -23,22 +23,15 @@ const Sidebar = () => {
   const reqUser = useSelector((store) => store.auth.reqUser);
   const token = localStorage.getItem("token");
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        if (token) {
-          const user = await dispatch(getUserAction(token));
-          if (user && user.role !== "ADMIN") {
-            navigate("/login");
-          }
-        }
-      } catch (error) {
-        console.error("Error fetching user data:", error);
-      }
-    };
-
-    fetchUserData();
+    if (token) dispatch(getUserAction(token));
     // eslint-disable-next-line
   }, [token]);
+  useEffect(() => {
+    if (reqUser?.role !== "ADMIN") {
+      navigate("/login");
+    }
+    // eslint-disable-next-line
+  }, [reqUser]);
   const sidebarClass = isSidebarOpen ? "sidebar-open" : "sidebar-closed";
 
   return (

@@ -33,7 +33,7 @@ const BrandManagement = () => {
   const token = localStorage.getItem("token");
 
   useEffect(() => {
-    if (token) dispatch(getAllBrandAction(token));
+    if (token) dispatch(getAllBrandAction());
     // eslint-disable-next-line
   }, [token]);
   const handleSnackbarClose = () => {
@@ -67,7 +67,7 @@ const BrandManagement = () => {
         brandId: id,
       })
     ).then(() => {
-      dispatch(getAllBrandAction(token));
+      dispatch(getAllBrandAction());
     });
     setSuccessMessage("Delete brand successfully!");
     setOpenSnackbar(true);
@@ -97,7 +97,7 @@ const BrandManagement = () => {
       brandData.data.imageUrl = editingBrand.imageUrl;
     }
     dispatch(updateBrandAction(brandData)).then(() => {
-      dispatch(getAllBrandAction(token));
+      dispatch(getAllBrandAction());
     });
     setImageURL("");
     closeEditModal();
@@ -121,7 +121,7 @@ const BrandManagement = () => {
       data: newBrand,
     };
     dispatch(createBrandAction(brandData)).then(() => {
-      dispatch(getAllBrandAction(token));
+      dispatch(getAllBrandAction());
     });
 
     setNewBrand({ imageUrl: "", name: "", description: "" });

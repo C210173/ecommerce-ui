@@ -21,14 +21,14 @@ const HomeNavbar = () => {
     navigate("/login");
   };
   return (
-    <nav className="max-w-screen-xl mx-auto py-4 flex items-center justify-between">
+    <nav className="max-w-screen-xl mx-auto py-3 flex items-center justify-between">
       <div className="flex items-center space-x-4">
         <FaComputer className="text-white text-3xl cursor-pointer" />
         <div className="relative">
           <input
             type="text"
             placeholder="Search"
-            className="border border-white bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white pl-10 pr-3 py-1 rounded-full focus:outline-none"
+            className="border border-white placeholder-white bg-transparent text-white pl-10 pr-3 py-1 rounded-full focus:outline-none"
           />
           <FaSearch className="absolute left-3 top-2 text-white" />
         </div>

@@ -27,14 +27,9 @@ export const createBrandAction = (brandData) => async (dispatch) => {
   }
 };
 
-export const getAllBrandAction = (token) => async (dispatch) => {
+export const getAllBrandAction = () => async (dispatch) => {
   try {
-    const response = await axios.get(`${BASE_API_URL}/api/admin/brands/all`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(`${BASE_API_URL}/home/brand/all`);
     const resData = response.data;
     console.log("all brands ", resData);
     dispatch({ type: GET_ALL_BRAND, payload: resData });

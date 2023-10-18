@@ -5,9 +5,10 @@ const HomeSlides = () => {
   const [currentIndex, setCurrentIndex] = useState(0);
 
   const slides = [
-    "https://intphcm.com/data/upload/mau-banner-noi-bat.jpg",
-    "https://i.pinimg.com/736x/3b/00/b4/3b00b4a1a0caa5bf2bf27917f0cc09d7.jpg",
-    "https://treobangron.com.vn/wp-content/uploads/2022/09/banner-khuyen-mai-42.jpg",
+    "https://res.cloudinary.com/dttlhvsas/image/upload/v1697506793/xbmj0svpnpdimbzctck5.png",
+    "https://res.cloudinary.com/dttlhvsas/image/upload/v1697506824/trppvkx7m8xg5rxgv4za.png",
+    "https://res.cloudinary.com/dttlhvsas/image/upload/v1697506845/m2bpf5jafrgn9uewccxr.png",
+    "https://res.cloudinary.com/dttlhvsas/image/upload/v1697506871/qzy6cik95het1vnixcpn.png",
   ];
 
   const nextSlide = () => {
@@ -27,8 +28,8 @@ const HomeSlides = () => {
   }, []);
 
   return (
-    <div className="max-w-5xl h-[70vh] mx-auto relative mt-4 rounded-sm">
-      <div className="overflow-hidden h-[70vh]">
+    <div className="w-[60%] h-[41vh] relative rounded-md overflow-hidden mt-1">
+      <div className="">
         {slides.map((slide, index) => (
           <div
             key={index}
@@ -45,16 +46,16 @@ const HomeSlides = () => {
         ))}
       </div>
       <button
-        className="absolute top-1/2 left-[-2rem] transform -translate-y-1/2 transparent p-2"
+        className="absolute top-1/2 left-[-0.5rem] transform -translate-y-1/2 bg-transparent hover:bg-slate-400 rounded-md p-1 py-3"
         onClick={prevSlide}
       >
-        <GrPrevious className="text-xl" />
+        <GrPrevious className="text-2xl text-white" />
       </button>
       <button
-        className="absolute top-1/2 right-[-2rem] transform -translate-y-1/2 bg-transparent p-2"
+        className="absolute top-1/2 right-[-0.5rem] transform -translate-y-1/2 bg-transparent hover:bg-slate-400 rounded-md px-1 py-3"
         onClick={nextSlide}
       >
-        <GrNext className="text-xl" />
+        <GrNext className="text-2xl text-white" />
       </button>
     </div>
   );

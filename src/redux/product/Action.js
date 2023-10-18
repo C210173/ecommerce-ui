@@ -4,6 +4,7 @@ import {
   CREATE_PRODUCT,
   DELETE_PRODUCT,
   GET_ALL_PRODUCT,
+  GET_PRODUCT,
   UPDATE_PRODUCT,
 } from "./ActionType";
 
@@ -27,17 +28,25 @@ export const createProductAction = (productData) => async (dispatch) => {
   }
 };
 
-export const getAllProductAction = (token) => async (dispatch) => {
+export const getAllProductAction = () => async (dispatch) => {
   try {
-    const response = await axios.get(`${BASE_API_URL}/api/admin/products/all`, {
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(`${BASE_API_URL}/home/product/all`);
     const resData = response.data;
     console.log("all product ", resData);
     dispatch({ type: GET_ALL_PRODUCT, payload: resData });
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const getProductByNameAction = (productName) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      `${BASE_API_URL}/home/product?productName=${productName}`
+    );
+    const resData = response.data;
+    console.log("find product by name", resData);
+    dispatch({ type: GET_PRODUCT, payload: resData });
   } catch (error) {
     console.log("error", error);
   }

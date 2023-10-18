@@ -2,6 +2,7 @@ import {
   CREATE_PRODUCT,
   DELETE_PRODUCT,
   GET_ALL_PRODUCT,
+  GET_PRODUCT,
   UPDATE_PRODUCT,
 } from "./ActionType";
 
@@ -10,6 +11,7 @@ const initialState = {
   allProduct: [],
   updateProduct: null,
   deleteProduct: null,
+  reqProduct: null,
 };
 
 export const productReducer = (store = initialState, { type, payload }) => {
@@ -21,6 +23,8 @@ export const productReducer = (store = initialState, { type, payload }) => {
     return { ...store, updateProduct: payload };
   } else if (type === DELETE_PRODUCT) {
     return { ...store, deleteProduct: payload };
+  } else if (type === GET_PRODUCT) {
+    return { ...store, reqProduct: payload };
   }
   return store;
 };

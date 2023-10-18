@@ -1,5 +1,7 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import DefaultHomeLayout from "./layout/DefaultHomeLayout";
+import Carousel from "react-multi-carousel";
+import "react-multi-carousel/lib/styles.css";
 import {
   AiFillStar,
   AiOutlineMinus,
@@ -8,8 +10,17 @@ import {
 } from "react-icons/ai";
 import { FaCartPlus } from "react-icons/fa6";
 import ReviewCard from "./components/ReviewCard";
+import { useParams } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { getProductByNameAction } from "../../redux/product/Action";
 
 const Product = () => {
+  const { productName } = useParams();
+  const dispatch = useDispatch();
+  const reqProduct = useSelector((store) => store.product.reqProduct);
+  useEffect(() => {
+    dispatch(getProductByNameAction(productName));
+  }, [dispatch, productName]);
   const [quantity, setQuantity] = useState(1);
 
   const increaseQuantity = () => {
@@ -43,27 +54,42 @@ const Product = () => {
         <div className="mt-20 mb-10">
           <div className="max-w-screen-xl mx-auto ">
             <div className="py-4 flex items-center justify-between">
-              <div className="w-[40%] h-[80vh] border">
-                <img
-                  src="https://store.storeimages.cdn-apple.com/8567/as-images.apple.com/is/iphone-13-finish-select-202207-pink?wid=5120&hei=2880&fmt=p-jpg&qlt=80&.v=1693063160403"
-                  alt=""
-                  className="w-full h-full object-cover"
-                />
+              <div className="w-[45%] h-[70vh]">
+                {reqProduct?.imageUrl && reqProduct.imageUrl.length > 0 ? (
+                  <Carousel
+                    responsive={{
+                      desktop: {
+                        breakpoint: { max: 3000, min: 1024 },
+                        items: 1,
+                      },
+                    }}
+                    infinite={true}
+                    autoPlay={true}
+                    autoPlaySpeed={4000}
+                  >
+                    {reqProduct?.imageUrl.map((image, index) => (
+                      <div key={index} className="w-full h-[70vh] relative">
+                        <img
+                          src={image}
+                          alt={`Product ${index}`}
+                          className="absolute inset-0 w-full h-full object-cover"
+                        />
+                      </div>
+                    ))}
+                  </Carousel>
+                ) : (
+                  <p>No images available</p>
+                )}
               </div>
-              <div className="w-[60%] h-[80vh] ml-10 flex flex-col justify-center px-10">
-                <span className="text-gray-700">Brand</span>
+              <div className="w-[55%] h-[70vh] ml-10 flex flex-col justify-center px-10">
+                <span className="text-gray-700">{reqProduct?.brand.name}</span>
                 <p className="text-gray-900 text-4xl font-bold mt-2">
-                  Product Name
+                  {reqProduct?.name}
                 </p>
-                <p className="mt-3">$999</p>
-                <p className="mt-5">
-                  Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                  Praesentium at dolorem quidem modi. Nam sequi consequatur
-                  obcaecati excepturi alias magni, accusamus eius blanditiis
-                  delectus ipsam minima ea iste laborum vero?
-                </p>
-                <p className="mt-2">OS: IOS16</p>
-                <p className="mt-2">connectivity</p>
+                <p className="mt-3">$ {reqProduct?.price}</p>
+                <p className="mt-5">{reqProduct?.description}</p>
+                <p className="mt-2">OS: {reqProduct?.operatingSystem}</p>
+                <p className="mt-2">Connectivity: {reqProduct?.connectivity}</p>
                 <div className="flex mt-10">
                   <div className="flex">
                     <button className="px-2 border" onClick={decreaseQuantity}>
@@ -84,7 +110,7 @@ const Product = () => {
               </div>
             </div>
             <div>
-              <p className="text-gray-900 text-4xl font-bold mt-14">
+              <p className="text-gray-900 text-4xl font-bold mt-20">
                 Customer Feedback
               </p>
               <div className="mt-5 flex items-center justify-between">
