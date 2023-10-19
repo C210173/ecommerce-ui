@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import {
@@ -18,8 +18,13 @@ import {
   Tooltip,
 } from "@mui/material";
 import { BiLogOut } from "react-icons/bi";
+import ChangePasswordModal from "../components/ChangePasswordModal";
+import { Alert, Snackbar } from "@mui/material";
 
 const HomeNavbar = () => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
+    useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const reqUser = useSelector((store) => store.auth.reqUser);
@@ -28,6 +33,13 @@ const HomeNavbar = () => {
     if (token) dispatch(getUserAction(token));
     // eslint-disable-next-line
   }, [token]);
+
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
+  const handlePasswordChangeSuccess = () => {
+    setOpenSnackbar(true);
+  };
 
   const handleLogout = () => {
     dispatch(logoutAction());
@@ -140,13 +152,18 @@ const HomeNavbar = () => {
                 </ListItemIcon>
                 Profile
               </MenuItem>
-              <MenuItem onClick={handleClose}>
+              <MenuItem onClick={() => navigate("/profile/update")}>
                 <ListItemIcon>
                   <MdOutlineManageAccounts />
                 </ListItemIcon>
                 Update profile
               </MenuItem>
-              <MenuItem onClick={handleClose}>
+              <MenuItem
+                onClick={() => {
+                  setIsChangePasswordModalOpen(true);
+                  handleClose();
+                }}
+              >
                 <ListItemIcon>
                   <MdAdminPanelSettings />
                 </ListItemIcon>
@@ -170,6 +187,25 @@ const HomeNavbar = () => {
           </Link>
         )}
       </div>
+      {isChangePasswordModalOpen && (
+        <ChangePasswordModal
+          onClose={() => setIsChangePasswordModalOpen(false)}
+          onPasswordChangeSuccess={handlePasswordChangeSuccess}
+        />
+      )}
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          change password successfully
+        </Alert>
+      </Snackbar>
     </nav>
   );
 };

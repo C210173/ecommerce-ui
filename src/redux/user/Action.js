@@ -64,30 +64,29 @@ export const getAllUserAction = (token) => async (dispatch) => {
   }
 };
 
-// Thay đổi changePasswordAction
-export const changePasswordAction =
-  (token, currentPassword, newPassword) => async (dispatch) => {
-    try {
-      const response = await axios.put(
-        `${BASE_API_URL}/api/users/change-password`,
-        {
-          currentPassword,
-          newPassword,
+export const changePasswordAction = (changePassData) => async (dispatch) => {
+  try {
+    const response = await axios.put(
+      `${BASE_API_URL}/api/users/password`,
+      changePassData.data,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${changePassData.token}`,
         },
-        {
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      const resData = response.data;
-      console.log("change password", resData);
+      }
+    );
+    const resData = response.data;
+    console.log("change password", resData);
+    if (resData.status) {
       dispatch({ type: CHANGE_PASSWORD, payload: resData });
-    } catch (error) {
-      console.error("Error changing password", error);
     }
-  };
+    return resData;
+  } catch (error) {
+    console.error("Error changing password", error);
+    throw error;
+  }
+};
 
 export const deleteAccountAction = (userData) => async (dispatch) => {
   try {

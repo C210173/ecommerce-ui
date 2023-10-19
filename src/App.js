@@ -14,6 +14,7 @@ import Product from "./pages/client/Product";
 import Cart from "./pages/client/Cart";
 import Profile from "./pages/client/Profile";
 import BrandManagement from "./pages/admin/BrandManagement";
+import EditProfile from "./pages/client/EditProfile";
 
 function App() {
   return (
@@ -32,6 +33,7 @@ function App() {
       <Route path="/product/:productName" element={<Product />} />
       <Route path="/cart" element={<Cart />} />
       <Route path="/profile" element={<Profile />} />
+      <Route path="/profile/update" element={<EditProfile />} />
     </Routes>
   );
 }
