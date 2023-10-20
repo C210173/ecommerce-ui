@@ -2,6 +2,7 @@ import {
   ADD_PRODUCT_TO_CART,
   CLEAR_CART,
   DELETE_ITEM_FROM_CART,
+  GET_CART,
   GET_PRODUCTS_FROM_CART,
   UPDATE_CART_ITEM,
 } from "./ActionType";
@@ -12,6 +13,7 @@ const initialState = {
   updateCartItem: null,
   deleteCartItem: null,
   clearCart: null,
+  cart: null,
 };
 
 export const cartReducer = (store = initialState, { type, payload }) => {
@@ -25,6 +27,8 @@ export const cartReducer = (store = initialState, { type, payload }) => {
     return { ...store, deleteCartItem: payload };
   } else if (type === CLEAR_CART) {
     return { ...store, clearCart: payload };
+  } else if (type === GET_CART) {
+    return { ...store, cart: payload };
   }
   return store;
 };

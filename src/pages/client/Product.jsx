@@ -9,19 +9,36 @@ import {
   AiOutlineStar,
 } from "react-icons/ai";
 import { FaCartPlus } from "react-icons/fa6";
-import ReviewCard from "./components/ReviewCard";
 import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductByNameAction } from "../../redux/product/Action";
+import {
+  createReviewAction,
+  getProductReviewAction,
+} from "../../redux/review/Action";
+import { Alert, Snackbar } from "@mui/material";
+import {
+  addToCartAction,
+  getProductsFromCartAction,
+} from "../../redux/cart/Action";
 
 const Product = () => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const { productName } = useParams();
   const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
   const reqProduct = useSelector((store) => store.product.reqProduct);
+  const productReview = useSelector((store) => store.review.productReview);
   useEffect(() => {
     dispatch(getProductByNameAction(productName));
   }, [dispatch, productName]);
+  useEffect(() => {
+    dispatch(getProductReviewAction(reqProduct?.id));
+  }, [dispatch, reqProduct]);
   const [quantity, setQuantity] = useState(1);
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
 
   const increaseQuantity = () => {
     setQuantity(quantity + 1);
@@ -33,7 +50,21 @@ const Product = () => {
     }
   };
 
+  const handleAddProductToCart = () => {
+    const cartData = {
+      token: token,
+      data: {
+        productId: reqProduct?.id,
+        quantity: quantity,
+      },
+    };
+    dispatch(addToCartAction(cartData)).then(() => {
+      dispatch(getProductsFromCartAction(token));
+    });
+  };
+
   const [starRating, setStarRating] = useState(0);
+  const [title, setTitle] = useState("");
   const [review, setReview] = useState("");
 
   const handleStarClick = (rating) => {
@@ -42,11 +73,24 @@ const Product = () => {
   const handleReviewChange = (event) => {
     setReview(event.target.value);
   };
+  const handleTitleChange = (event) => {
+    setTitle(event.target.value);
+  };
 
   const handleSubmitReview = () => {
-    // Gửi đánh giá (starRating) và bình luận (review) đi đây
-    console.log("Rating:", starRating);
-    console.log("Review:", review);
+    const data = {
+      productId: reqProduct?.id,
+      rating: starRating,
+      title: title,
+      comment: review,
+    };
+    dispatch(createReviewAction({ token: token, data: data })).then(() => {
+      dispatch(getProductReviewAction(reqProduct?.id));
+      setOpenSnackbar(true);
+    });
+    setStarRating(0);
+    setReview("");
+    setTitle("");
   };
   return (
     <DefaultHomeLayout
@@ -102,7 +146,10 @@ const Product = () => {
                       <AiOutlinePlus />
                     </button>
                   </div>
-                  <button className="flex rounded-md border items-center ml-10 py-1 px-3 text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l">
+                  <button
+                    onClick={handleAddProductToCart}
+                    className="flex rounded-md border items-center ml-10 py-1 px-3 text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l"
+                  >
                     <FaCartPlus />
                     <p className="ml-3 ">Add to cart</p>
                   </button>
@@ -119,30 +166,71 @@ const Product = () => {
                   <div className="flex items-center">
                     {Array.from({ length: 5 }, (_, index) => (
                       <span key={index} className="text-2xl">
-                        {index + 1 <= 4 ? (
+                        {index + 1 <= productReview?.averageRating ? (
                           <AiFillStar className="text-yellow-400" />
                         ) : (
                           <AiOutlineStar className="text-gray-300" />
                         )}
                       </span>
                     ))}
-                    <span className="text-xl ml-2">(4.0)</span>
+                    <span className="text-xl ml-2">
+                      {productReview?.averageRating}
+                    </span>
                   </div>
-                  <span className="text-gray-700">total 10 ratings</span>
+                  <span className="text-gray-700">
+                    total {productReview?.reviews?.length} ratings
+                  </span>
                 </div>
                 <div className="w-[80%] h-[40rem] px-10 ">
                   <p className="font-semibold text-lg text-gray-700 ml-10">
                     Review
                   </p>
-                  <div className="mt-2 overflow-auto h-[22rem]">
-                    {[1, 1, 1, 1].map((item, index) => (
-                      <ReviewCard />
-                    ))}
-                  </div>
+                  {productReview?.reviews?.length > 0 && (
+                    <div className="mt-2 overflow-auto max-h-[22rem]">
+                      {productReview?.reviews.map((itemReview) => (
+                        <div key={itemReview?.id}>
+                          <div className="mt-2">
+                            <div className="flex items-center ">
+                              <img
+                                className="rounded-full object-cover h-[2rem] w-[2rem] mr-2"
+                                src={
+                                  itemReview?.user?.imageUrl ||
+                                  "https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+                                }
+                                alt=""
+                              />
+                              <p className="text-gray-900 font-medium text-sm">
+                                {itemReview?.user?.fullName}
+                              </p>
+                            </div>
+                            <div className="flex items-center px-10">
+                              {Array.from({ length: 5 }, (_, index) => (
+                                <span key={index} className="text-xl">
+                                  {index + 1 <= itemReview?.rating ? (
+                                    <AiFillStar className="text-yellow-400" />
+                                  ) : (
+                                    <AiOutlineStar className="text-gray-300" />
+                                  )}
+                                </span>
+                              ))}
+                              <p className="ml-3 text-base font-semibold text-gray-800">
+                                {itemReview?.title}
+                              </p>
+                            </div>
+                            <div className="px-10">
+                              <p>{itemReview?.comment}</p>
+                            </div>
+                          </div>
+                        </div>
+                      ))}
+                    </div>
+                  )}
                   <div className="mt-2 pr-10">
                     <input
                       className="px-4 py-2 rounded-lg border border-gray-300 focus:outline-none w-full"
                       placeholder="Write your title review..."
+                      value={title}
+                      onChange={handleTitleChange}
                       type="text"
                     />
                     <textarea
@@ -179,6 +267,19 @@ const Product = () => {
               </div>
             </div>
           </div>
+          <Snackbar
+            open={openSnackbar}
+            autoHideDuration={3000}
+            onClose={handleSnackbarClose}
+          >
+            <Alert
+              onClose={handleSnackbarClose}
+              severity="success"
+              sx={{ width: "100%" }}
+            >
+              Create review successfully
+            </Alert>
+          </Snackbar>
         </div>
       }
     />

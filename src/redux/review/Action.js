@@ -44,16 +44,10 @@ export const getAllReviewAction = (token) => async (dispatch) => {
   }
 };
 
-export const getProductReviewAction = (reviewData) => async (dispatch) => {
+export const getProductReviewAction = (productId) => async (dispatch) => {
   try {
     const response = await axios.get(
-      `${BASE_API_URL}/api/reviews/${reviewData.productId}`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${reviewData.token}`,
-        },
-      }
+      `${BASE_API_URL}/home/product/review/${productId}`
     );
     const resData = response.data;
     console.log("product review ", resData);
@@ -63,7 +57,6 @@ export const getProductReviewAction = (reviewData) => async (dispatch) => {
   }
 };
 
-// Thay đổi getUserReviewAction
 export const getUserReviewAction = (token) => async (dispatch) => {
   try {
     const response = await axios.get(`${BASE_API_URL}/api/reviews/user`, {

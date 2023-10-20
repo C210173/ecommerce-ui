@@ -1,46 +1,84 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect } from "react";
 import DefaultHomeLayout from "./layout/DefaultHomeLayout";
 import CartItem from "./components/CartItem";
-import { cartList } from "../../dummydata/DummyData";
 import {
   AiOutlineArrowRight,
   AiOutlineMinus,
   AiOutlinePlus,
 } from "react-icons/ai";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteItemFromCartAction,
+  getCartAction,
+  getProductsFromCartAction,
+  updateCartItemAction,
+} from "../../redux/cart/Action";
 
 const Cart = () => {
-  const [productQuantities, setProductQuantities] = useState({});
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const productsFromCart = useSelector((store) => store.cart.productsFromCart);
+  const cart = useSelector((store) => store.cart.cart);
 
-  // Cập nhật productQuantities ban đầu từ cartList
   useEffect(() => {
-    const initialQuantities = {};
-    cartList.forEach((item) => {
-      initialQuantities[item.product.id] = item.quantity;
-    });
-    setProductQuantities(initialQuantities);
-  }, []);
+    if (token) dispatch(getCartAction(token));
+  }, [dispatch, token]);
 
   const increaseQuantity = (productId) => {
-    setProductQuantities((prevQuantities) => ({
-      ...prevQuantities,
-      [productId]: (prevQuantities[productId] || 0) + 1,
-    }));
+    const updatedCart = [...productsFromCart];
+    const productToUpdate = updatedCart.find(
+      (item) => item.product.id === productId
+    );
+    if (productToUpdate) {
+      productToUpdate.quantity += 1;
+
+      dispatch(
+        updateCartItemAction({
+          token: token,
+          data: {
+            productId: productId,
+            quantity: productToUpdate.quantity,
+          },
+        })
+      ).then(() => {
+        dispatch(getProductsFromCartAction(token));
+        dispatch(getCartAction(token));
+      });
+    }
   };
 
   const decreaseQuantity = (productId) => {
-    setProductQuantities((prevQuantities) => {
-      const newQuantity = (prevQuantities[productId] || 0) - 1;
-      if (newQuantity >= 1) {
-        return {
-          ...prevQuantities,
-          [productId]: newQuantity,
-        };
+    const updatedCart = [...productsFromCart];
+    const productToUpdate = updatedCart.find(
+      (item) => item.product.id === productId
+    );
+    if (productToUpdate) {
+      if (productToUpdate.quantity > 1) {
+        productToUpdate.quantity -= 1;
+        dispatch(
+          updateCartItemAction({
+            token: token,
+            data: {
+              productId: productId,
+              quantity: productToUpdate.quantity,
+            },
+          })
+        ).then(() => {
+          dispatch(getProductsFromCartAction(token));
+          dispatch(getCartAction(token));
+        });
       } else {
-        const updatedQuantities = { ...prevQuantities };
-        delete updatedQuantities[productId];
-        return updatedQuantities;
+        dispatch(
+          deleteItemFromCartAction({
+            token: token,
+            productId: productId,
+          })
+        ).then(() => {
+          dispatch(getProductsFromCartAction(token));
+          dispatch(getCartAction(token));
+        });
       }
-    });
+    }
   };
 
   return (
@@ -71,32 +109,38 @@ const Cart = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {cartList.map((item, index) => (
-                      <tr key={index}>
+                    {productsFromCart.map((productItem) => (
+                      <tr key={productItem?.product.id}>
                         <td className="px-4 py-2 text-left text-sm">
-                          <CartItem
-                            imgUrl={item.product.imageUrl}
-                            name={item.product.name}
-                            brand={item.product.brand}
-                          />
+                          {productItem?.product && (
+                            <CartItem
+                              imgUrl={productItem?.product?.imageUrl[0]}
+                              name={productItem?.product?.name}
+                              brand={productItem?.product?.brand?.name}
+                            />
+                          )}
                         </td>
                         <td className="px-4 py-2 text-left text-sm">
-                          {item.product.price}
+                          {productItem?.product && productItem.product.price}
                         </td>
                         <td className="px-4 py-2 text-left text-sm">
                           <div className="flex">
                             <button
                               className="px-2 border"
-                              onClick={() => decreaseQuantity(item.product.id)}
+                              onClick={() =>
+                                decreaseQuantity(productItem?.product.id)
+                              }
                             >
                               <AiOutlineMinus />
                             </button>
                             <p className="leading-8 border px-2 w-[2.5rem] text-center">
-                              {productQuantities[item.product.id] || 0}
+                              {productItem?.quantity}
                             </p>
                             <button
                               className="px-2 border"
-                              onClick={() => increaseQuantity(item.product.id)}
+                              onClick={() =>
+                                increaseQuantity(productItem?.product.id)
+                              }
                             >
                               <AiOutlinePlus />
                             </button>
@@ -104,8 +148,7 @@ const Cart = () => {
                         </td>
                         <td className="px-4 py-2 text-left text-sm">
                           {(
-                            item.product.price *
-                            (productQuantities[item.product.id] || 0)
+                            productItem?.product?.price * productItem?.quantity
                           ).toFixed(2)}
                         </td>
                       </tr>
@@ -124,7 +167,15 @@ const Cart = () => {
                     <span className="text-lg text-gray-800 font-medium">
                       Subtotal
                     </span>
-                    <span className="text-gray-600">$1000</span>
+                    <span className="text-gray-600">
+                      ${cart?.totalPrice.toFixed(2)}
+                    </span>
+                  </div>
+                  <div className="flex justify-between items-center mt-3">
+                    <span className="text-lg text-gray-800 font-medium">
+                      Total Product
+                    </span>
+                    <span className="text-gray-600">{cart?.totalItem}</span>
                   </div>
                   <div className="flex justify-between items-center mt-3">
                     <span className="text-lg text-gray-800 font-medium">
@@ -140,7 +191,9 @@ const Cart = () => {
                     <span className="text-lg text-gray-800 font-medium">
                       Total
                     </span>
-                    <span className="text-gray-600">$1000</span>
+                    <span className="text-gray-600">
+                      ${cart?.totalPrice.toFixed(2)}
+                    </span>
                   </div>
                   <div className="flex items-center justify-center w-full h-[10rem]">
                     <button className="rounded-full border py-3 px-8 text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l">

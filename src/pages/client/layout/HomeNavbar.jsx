@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { getUserAction, logoutAction } from "../../../redux/auth/Action";
 import {
   Avatar,
+  Badge,
   Divider,
   IconButton,
   ListItemIcon,
@@ -20,6 +21,7 @@ import {
 import { BiLogOut } from "react-icons/bi";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import { Alert, Snackbar } from "@mui/material";
+import { getProductsFromCartAction } from "../../../redux/cart/Action";
 
 const HomeNavbar = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -28,9 +30,11 @@ const HomeNavbar = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const reqUser = useSelector((store) => store.auth.reqUser);
+  const productsFromCart = useSelector((store) => store.cart.productsFromCart);
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token) dispatch(getUserAction(token));
+    if (token) dispatch(getProductsFromCartAction(token));
     // eslint-disable-next-line
   }, [token]);
 
@@ -93,10 +97,12 @@ const HomeNavbar = () => {
         </Link>
       </div>
       <div className="flex items-center space-x-2">
-        <FaShoppingCart
-          onClick={() => navigate("/cart")}
-          className="text-white text-2xl cursor-pointer hover:text-gray-400"
-        />
+        <Badge badgeContent={productsFromCart?.length} color="success">
+          <FaShoppingCart
+            onClick={() => navigate("/cart")}
+            className="text-white text-2xl cursor-pointer hover:text-gray-400"
+          />
+        </Badge>
         {reqUser ? (
           <>
             <Tooltip title="Account settings">

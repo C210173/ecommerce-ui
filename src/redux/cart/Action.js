@@ -4,6 +4,7 @@ import {
   ADD_PRODUCT_TO_CART,
   CLEAR_CART,
   DELETE_ITEM_FROM_CART,
+  GET_CART,
   GET_PRODUCTS_FROM_CART,
   UPDATE_CART_ITEM,
 } from "./ActionType";
@@ -42,6 +43,22 @@ export const getProductsFromCartAction = (token) => async (dispatch) => {
     const resData = response.data;
     console.log("all product from cart ", resData);
     dispatch({ type: GET_PRODUCTS_FROM_CART, payload: resData });
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const getCartAction = (token) => async (dispatch) => {
+  try {
+    const response = await axios.get(`${BASE_API_URL}/api/carts/`, {
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    const resData = response.data;
+    console.log("cart ", resData);
+    dispatch({ type: GET_CART, payload: resData });
   } catch (error) {
     console.log("error", error);
   }
