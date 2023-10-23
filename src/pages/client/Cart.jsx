@@ -13,9 +13,11 @@ import {
   getProductsFromCartAction,
   updateCartItemAction,
 } from "../../redux/cart/Action";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const token = localStorage.getItem("token");
   const productsFromCart = useSelector((store) => store.cart.productsFromCart);
   const cart = useSelector((store) => store.cart.cart);
@@ -109,7 +111,7 @@ const Cart = () => {
                     </tr>
                   </thead>
                   <tbody>
-                    {productsFromCart.map((productItem) => (
+                    {productsFromCart?.map((productItem) => (
                       <tr key={productItem?.product.id}>
                         <td className="px-4 py-2 text-left text-sm">
                           {productItem?.product && (
@@ -196,7 +198,10 @@ const Cart = () => {
                     </span>
                   </div>
                   <div className="flex items-center justify-center w-full h-[10rem]">
-                    <button className="rounded-full border py-3 px-8 text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l">
+                    <button
+                      onClick={() => navigate("/checkout")}
+                      className="rounded-full border py-3 px-8 text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l"
+                    >
                       Check out
                     </button>
                   </div>

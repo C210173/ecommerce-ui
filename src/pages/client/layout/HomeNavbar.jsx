@@ -97,7 +97,7 @@ const HomeNavbar = () => {
         </Link>
       </div>
       <div className="flex items-center space-x-2">
-        <Badge badgeContent={productsFromCart?.length} color="success">
+        <Badge badgeContent={productsFromCart?.length || 0} color="success">
           <FaShoppingCart
             onClick={() => navigate("/cart")}
             className="text-white text-2xl cursor-pointer hover:text-gray-400"

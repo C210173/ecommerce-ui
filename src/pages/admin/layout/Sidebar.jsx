@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { FiMenu } from "react-icons/fi";
 import { RiFeedbackFill } from "react-icons/ri";
-import { FaRankingStar } from "react-icons/fa6";
 import { AiFillHome } from "react-icons/ai";
 import { HiTemplate } from "react-icons/hi";
 import { TbBrandDatabricks } from "react-icons/tb";
@@ -122,13 +121,6 @@ const Sidebar = () => {
         >
           <BsBagPlusFill className="text-xl text-white mx-3" />
           {isSidebarOpen ? <p className="text-white text-sx">Order</p> : null}
-        </div>
-        <div
-          onClick={() => navigate("/admin/rating")}
-          className="flex items-center cursor-pointer h-[40px] rounded hover:bg-gray-500"
-        >
-          <FaRankingStar className="text-xl text-white mx-3" />
-          {isSidebarOpen ? <p className="text-white text-sx">Rating</p> : null}
         </div>
         <div
           onClick={() => navigate("/admin/review")}

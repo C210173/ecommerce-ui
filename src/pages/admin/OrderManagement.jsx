@@ -3,15 +3,23 @@ import DefaultLayout from "./layout/DefaultLayout";
 import Header from "./layout/Header";
 import { FiSearch } from "react-icons/fi";
 import { FaEdit, FaEye, FaTrashAlt } from "react-icons/fa";
-import { orderList } from "../../dummydata/DummyData";
 import { format } from "date-fns";
 import OrderDetailModal from "./components/OrderDetailModal";
 import EditStatusModal from "./components/EditStatusModal";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  deleteOrderAction,
+  getAllOrderAction,
+  updateOrderStatusAction,
+} from "../../redux/order/Action";
 
 const OrderManagement = () => {
-  const itemsPerPage = 10; // Số người dùng trên mỗi trang
-  const totalPages = Math.ceil(orderList.length / itemsPerPage);
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const allOrder = useSelector((store) => store.order.allOrder);
+  const itemsPerPage = 10;
+  const totalPages = Math.ceil(allOrder.length / itemsPerPage);
 
   const paginateData = (data, currentPage) => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -19,7 +27,7 @@ const OrderManagement = () => {
     return data.slice(startIndex, endIndex);
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const displayedOrder = paginateData(orderList, currentPage);
+  const displayedOrder = paginateData(allOrder, currentPage);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [selectedOrder, setSelectedOrder] = useState(null);
   const [isEditStatusModalOpen, setIsEditStatusModalOpen] = useState(false);
@@ -45,7 +53,18 @@ const OrderManagement = () => {
     setIsEditStatusModalOpen(false);
     setSelectedOrderForEdit(null);
   };
-  const saveStatusChange = (newStatus) => {};
+  const saveStatusChange = (newStatus) => {
+    const orderData = {
+      token: token,
+      orderId: selectedOrderForEdit.id,
+      data: {
+        status: newStatus,
+      },
+    };
+    dispatch(updateOrderStatusAction(orderData)).then(() => {
+      dispatch(getAllOrderAction(token));
+    });
+  };
 
   const openDeleteModal = (order) => {
     setDeletingOrder(order);
@@ -58,9 +77,9 @@ const OrderManagement = () => {
   };
 
   const handleDeleteUser = (orderId) => {
-    // Gửi yêu cầu API hoặc thực hiện xóa người dùng ở đây
-    console.log(`Deleted order ID: ${orderId}`);
-    // Sau khi xóa, bạn có thể cập nhật danh sách người dùng tại đây (nếu cần)
+    dispatch(deleteOrderAction({ orderId: orderId, token: token })).then(() => {
+      dispatch(getAllOrderAction(token));
+    });
   };
   return (
     <DefaultLayout
@@ -102,10 +121,10 @@ const OrderManagement = () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-100">
-                {displayedOrder.map((order) => (
+                {displayedOrder?.map((order) => (
                   <tr key={order.id} className="hover:bg-gray-200">
                     <td className="px-6 py-4">{order.id}</td>
-                    <td className="px-6 py-4">{order.userId}</td>
+                    <td className="px-6 py-4">{order.userOrder.fullName}</td>
                     <td className="px-3 py-4">{order.totalPrice}</td>
                     <td className="px-3 py-4 w-[14vw]">
                       {format(new Date(order.orderDate), "dd/MM/yyyy HH:mm")}

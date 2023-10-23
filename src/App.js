@@ -5,7 +5,6 @@ import UserManagement from "./pages/admin/UserManagement";
 import CategoryManagement from "./pages/admin/CategoryManagement";
 import ProductManagement from "./pages/admin/ProductManagement";
 import OrderManagement from "./pages/admin/OrderManagement";
-import RatingManagement from "./pages/admin/RatingManagement";
 import ReviewManagement from "./pages/admin/ReviewManagement";
 import Login from "./pages/auth/Login";
 import Register from "./pages/auth/Register";
@@ -15,6 +14,7 @@ import Cart from "./pages/client/Cart";
 import Profile from "./pages/client/Profile";
 import BrandManagement from "./pages/admin/BrandManagement";
 import EditProfile from "./pages/client/EditProfile";
+import CheckOut from "./pages/client/CheckOut";
 
 function App() {
   return (
@@ -25,7 +25,6 @@ function App() {
       <Route path="/admin/brand" element={<BrandManagement />} />
       <Route path="/admin/product" element={<ProductManagement />} />
       <Route path="/admin/order" element={<OrderManagement />} />
-      <Route path="/admin/rating" element={<RatingManagement />} />
       <Route path="/admin/review" element={<ReviewManagement />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
@@ -34,6 +33,7 @@ function App() {
       <Route path="/cart" element={<Cart />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/profile/update" element={<EditProfile />} />
+      <Route path="/checkout" element={<CheckOut />} />
     </Routes>
   );
 }

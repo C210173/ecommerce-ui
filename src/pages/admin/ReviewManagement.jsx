@@ -4,11 +4,12 @@ import { FaTrashAlt } from "react-icons/fa";
 import Header from "./layout/Header";
 import { format } from "date-fns";
 import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
-import { reviewList } from "../../dummydata/DummyData";
+import { useSelector } from "react-redux";
 
 const ReviewManagement = () => {
-  const itemsPerPage = 7; // Số người dùng trên mỗi trang
-  const totalPages = Math.ceil(reviewList.length / itemsPerPage);
+  const allReview = useSelector((store) => store.review.allReview);
+  const itemsPerPage = 7;
+  const totalPages = Math.ceil(allReview.length / itemsPerPage);
 
   const paginateData = (data, currentPage) => {
     const startIndex = (currentPage - 1) * itemsPerPage;
@@ -16,7 +17,7 @@ const ReviewManagement = () => {
     return data.slice(startIndex, endIndex);
   };
   const [currentPage, setCurrentPage] = useState(1);
-  const displayedReviews = paginateData(reviewList, currentPage);
+  const displayedReviews = paginateData(allReview, currentPage);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
   const [deletingUser, setDeletingUser] = useState(null);
 
@@ -53,6 +54,9 @@ const ReviewManagement = () => {
                     Product
                   </th>
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
+                    Rating
+                  </th>
+                  <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                     Title
                   </th>
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
@@ -67,10 +71,11 @@ const ReviewManagement = () => {
                 </tr>
               </thead>
               <tbody className="bg-gray-100">
-                {displayedReviews.map((review) => (
+                {displayedReviews?.map((review) => (
                   <tr key={review.id} className="hover:bg-gray-200">
-                    <td className="px-6 py-4">{review.userId}</td>
-                    <td className="px-6 py-4">{review.productId}</td>
+                    <td className="px-6 py-4">{review.user.fullName}</td>
+                    <td className="px-6 py-4">{review.product.name}</td>
+                    <td className="px-6 py-4">{review.rating}</td>
                     <td className="px-6 py-4">{review.title}</td>
                     <td className="px-6 py-4">{review.comment}</td>
                     <td className="px-6 py-4">

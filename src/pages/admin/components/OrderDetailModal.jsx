@@ -13,17 +13,24 @@ const OrderDetailModal = ({ order, onClose }) => {
           <p className="ml-3 text-gray-800">{order.id}</p>
         </div>
         <div className="flex items-center">
-          <span className="font-semibold">User name</span>
-          <p className="ml-3 text-gray-800">username</p>
+          <span className="font-semibold">User Order</span>
+          <p className="ml-3 text-gray-800">{order.userOrder.fullName}</p>
         </div>
         <div className="flex items-center">
-          <span className="font-semibold">Address</span>
-          {order.shippingAddress.map((item, index) => (
-            <p key={index} className="ml-3 text-gray-800">
-              {item.postalCode} : {item.street}, {item.city}, {item.state},{" "}
-              {item.country}
-            </p>
-          ))}
+          <span className="font-semibold">Shipping address</span>
+          <p className="ml-3 text-gray-800">
+            {order.shippingAddress.postalCode} : {order.shippingAddress.street},{" "}
+            {order.shippingAddress.city}, {order.shippingAddress.state},{" "}
+            {order.shippingAddress.country}
+          </p>
+        </div>
+        <div className="flex items-center">
+          <span className="font-semibold">Consignee name</span>
+          <p className="ml-3 text-gray-800">{order.consigneeName}</p>
+        </div>
+        <div className="flex items-center">
+          <span className="font-semibold">Consignee phone</span>
+          <p className="ml-3 text-gray-800">{order.consigneePhone}</p>
         </div>
         <div className="overflow-auto max-h-[14vh] mt-2">
           <table className="w-full">
@@ -44,10 +51,12 @@ const OrderDetailModal = ({ order, onClose }) => {
               {order.items.map((item, index) => (
                 <tr key={index}>
                   <td className="text-gray-800 px-6 py-2">
-                    {item.productName}
+                    {item.product.name}
                   </td>
                   <td className="text-gray-800 px-6 py-2">{item.quantity}</td>
-                  <td className="text-gray-800 px-6 py-2">${item.price}</td>
+                  <td className="text-gray-800 px-6 py-2">
+                    ${item.product.price * item.quantity}
+                  </td>
                 </tr>
               ))}
             </tbody>

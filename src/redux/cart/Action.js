@@ -117,6 +117,8 @@ export const clearCartAction = (token) => async (dispatch) => {
     const resData = response.data;
     console.log("clear cart", resData);
     dispatch({ type: CLEAR_CART, payload: resData });
+    dispatch({ type: GET_PRODUCTS_FROM_CART, payload: null });
+    dispatch({ type: GET_CART, payload: null });
   } catch (error) {
     console.log("error", error);
   }
