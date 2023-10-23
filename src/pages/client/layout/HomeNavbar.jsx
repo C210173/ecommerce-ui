@@ -79,21 +79,21 @@ const HomeNavbar = () => {
       <div className="space-x-4 w-[400px]">
         <Link
           to="/"
-          className="text-lg text-white hover:text-gray-400 font-semibold"
+          className="text-lg text-white hover:text-gray-400 font-semibold uppercase"
         >
           Home
         </Link>
         <Link
           to="/categories"
-          className="text-lg text-white hover:text-gray-400 font-semibold"
+          className="text-lg text-white hover:text-gray-400 font-semibold uppercase"
         >
           Categories
         </Link>
         <Link
-          to="/about"
-          className="text-lg text-white hover:text-gray-400 font-semibold"
+          to="/brand"
+          className="text-lg text-white hover:text-gray-400 font-semibold uppercase"
         >
-          About
+          Brand
         </Link>
       </div>
       <div className="flex items-center space-x-2">

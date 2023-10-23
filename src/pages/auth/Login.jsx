@@ -70,8 +70,14 @@ const Login = () => {
   }, [reqUser]);
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-violet-500 to-fuchsia-500">
-      <div className="max-w-md w-full p-6 bg-white rounded-lg">
-        <h2 className="text-2xl font-semibold mb-6 text-center">Login</h2>
+      <div className="max-w-md w-full px-6 py-2 bg-white rounded-lg">
+        <img
+          onClick={() => navigate("/")}
+          className="cursor-pointer w-[100px] h-[100px] mx-auto"
+          src="https://res.cloudinary.com/dttlhvsas/image/upload/v1698022545/H_1_t7duwz.png"
+          alt="Logo"
+        />
+        <h2 className="text-2xl font-semibold">Login</h2>
         <form onSubmit={formik.handleSubmit}>
           <TextField
             fullWidth

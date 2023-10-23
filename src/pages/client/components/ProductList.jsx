@@ -1,13 +1,18 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FaCartPlus } from "react-icons/fa";
-import { useDispatch, useSelector } from "react-redux";
-import { getAllProductAction } from "../../../redux/product/Action";
+import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import {
+  addToCartAction,
+  getProductsFromCartAction,
+} from "../../../redux/cart/Action";
+import { Alert, Snackbar } from "@mui/material";
 
-const ProductList = () => {
-  const dispatch = useDispatch();
-  const allProduct = useSelector((store) => store.product.allProduct);
+const ProductList = ({ listProduct }) => {
+  const [openSnackbar, setOpenSnackbar] = useState(false);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
   const productsPerPage = 12;
   const [currentPage, setCurrentPage] = useState(1);
   const paginateData = (data, currentPage) => {
@@ -15,35 +20,47 @@ const ProductList = () => {
     const endIndex = startIndex + productsPerPage;
     return data.slice(startIndex, endIndex);
   };
-  const displayedProducts = paginateData(allProduct, currentPage);
-  const totalPages = Math.ceil(allProduct.length / productsPerPage);
+  const displayedProducts = paginateData(listProduct, currentPage);
+  const totalPages = Math.ceil(listProduct.length / productsPerPage);
 
-  useEffect(() => {
-    dispatch(getAllProductAction());
-  }, [dispatch]);
+  const handleSnackbarClose = () => {
+    setOpenSnackbar(false);
+  };
 
-  const onAddToCart = (product) => {};
+  const onAddToCart = (product) => {
+    const cartData = {
+      token: token,
+      data: {
+        productId: product.id,
+        quantity: 1,
+      },
+    };
+    dispatch(addToCartAction(cartData)).then(() => {
+      setOpenSnackbar(true);
+      dispatch(getProductsFromCartAction(token));
+    });
+  };
   const onProductClick = (productName) => {
     navigate(`/product/${productName}`);
   };
 
   return (
-    <div className="max-w-screen-xl mx-auto py-4 mt-10">
+    <>
       <div className="flex flex-wrap -mx-4">
         {displayedProducts?.map((product) => (
           <div
             key={product.id}
             className="w-full sm:w-1/2 md:w-1/4 lg:w-1/4 xl:w-1/4 px-4 mb-4"
           >
-            <div className="max-w-xs mx-2 mb-4 rounded-md overflow-hidden hover:drop-shadow-xl">
+            <div className="max-w-xs mb-4 rounded-md overflow-hidden hover:drop-shadow-xl">
               <img
                 src={product?.imageUrl[0]}
                 alt={product?.name}
                 onClick={() => onProductClick(product.name)}
-                className="w-full h-[16rem] object-cover cursor-pointer"
+                className="w-full h-[14rem] object-cover cursor-pointer"
               />
               <div className="p-4 bg-gray-200">
-                <h2 className="text-lg font-semibold text-center">
+                <h2 className="text-lg font-semibold text-center truncate">
                   {product?.name}
                 </h2>
                 <p className="text-gray-700 text-center">
@@ -54,7 +71,7 @@ const ProductList = () => {
                 </p>
                 <div className="flex items-center justify-center">
                   <button
-                    className="mt-4 bg-gradient-to-r from-violet-500 to-fuchsia-500 text-white text-center px-6 py-2 rounded-full hover:bg-gradient-to-l"
+                    className="mt-4 hover:bg-[#9a5959] bg-[#882424] text-white text-center px-6 py-2 rounded-full"
                     onClick={() => onAddToCart(product)}
                   >
                     <FaCartPlus />
@@ -100,7 +117,20 @@ const ProductList = () => {
           Next
         </button>
       </div>
-    </div>
+      <Snackbar
+        open={openSnackbar}
+        autoHideDuration={3000}
+        onClose={handleSnackbarClose}
+      >
+        <Alert
+          onClose={handleSnackbarClose}
+          severity="success"
+          sx={{ width: "100%" }}
+        >
+          Added to cart
+        </Alert>
+      </Snackbar>
+    </>
   );
 };
 

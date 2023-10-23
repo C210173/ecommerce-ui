@@ -158,49 +158,49 @@ const Cart = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="w-[30%] h-[31.7rem] bg-gradient-to-r from-violet-300 to-fuchsia-300 rounded-md">
+              <div className="w-[30%] h-[31.7rem] bg-gradient-to-r from-[#BF2D2D] to-[#594C4C] rounded-md">
                 <div className="mt-10">
-                  <p className="text-gray-900 font-semibold text-2xl text-center">
+                  <p className="text-white font-semibold text-2xl text-center">
                     Order Summary
                   </p>
                 </div>
                 <div className="mt-10 px-10">
                   <div className="flex justify-between items-center">
-                    <span className="text-lg text-gray-800 font-medium">
+                    <span className="text-lg text-white font-medium">
                       Subtotal
                     </span>
-                    <span className="text-gray-600">
+                    <span className="text-white">
                       ${cart?.totalPrice.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex justify-between items-center mt-3">
-                    <span className="text-lg text-gray-800 font-medium">
+                    <span className="text-lg text-white font-medium">
                       Total Product
                     </span>
-                    <span className="text-gray-600">{cart?.totalItem}</span>
+                    <span className="text-white">{cart?.totalItem}</span>
                   </div>
                   <div className="flex justify-between items-center mt-3">
-                    <span className="text-lg text-gray-800 font-medium">
+                    <span className="text-lg text-white font-medium">
                       Shipping
                     </span>
-                    <span className="text-gray-600">free</span>
+                    <span className="text-white">free</span>
                   </div>
                   <div className="flex items-center text-green-600 mt-3">
                     <span className="">Add coupon code</span>
                     <AiOutlineArrowRight />
                   </div>
                   <div className="flex justify-between items-center mt-10 border-t py-3">
-                    <span className="text-lg text-gray-800 font-medium">
+                    <span className="text-lg text-white font-medium">
                       Total
                     </span>
-                    <span className="text-gray-600">
+                    <span className="text-white">
                       ${cart?.totalPrice.toFixed(2)}
                     </span>
                   </div>
                   <div className="flex items-center justify-center w-full h-[10rem]">
                     <button
                       onClick={() => navigate("/checkout")}
-                      className="rounded-full border py-3 px-8 text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l"
+                      className="rounded-full border py-3 px-8 text-white bg-[#0097B2] hover:bg-[#296F72]"
                     >
                       Check out
                     </button>

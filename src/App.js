@@ -15,6 +15,8 @@ import Profile from "./pages/client/Profile";
 import BrandManagement from "./pages/admin/BrandManagement";
 import EditProfile from "./pages/client/EditProfile";
 import CheckOut from "./pages/client/CheckOut";
+import Categories from "./pages/client/Categories";
+import Brand from "./pages/client/Brand";
 
 function App() {
   return (
@@ -34,6 +36,8 @@ function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/profile/update" element={<EditProfile />} />
       <Route path="/checkout" element={<CheckOut />} />
+      <Route path="/categories" element={<Categories />} />
+      <Route path="/brand" element={<Brand />} />
     </Routes>
   );
 }

@@ -24,7 +24,7 @@ const CategoryManagement = () => {
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
   useEffect(() => {
-    if (token) dispatch(getAllCategoryAction(token));
+    if (token) dispatch(getAllCategoryAction());
     // eslint-disable-next-line
   }, [token]);
 

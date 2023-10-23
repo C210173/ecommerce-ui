@@ -24,6 +24,7 @@ import {
 
 const Product = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [message, setMessage] = useState("");
   const { productName } = useParams();
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
@@ -59,6 +60,8 @@ const Product = () => {
       },
     };
     dispatch(addToCartAction(cartData)).then(() => {
+      setMessage("Added to cart");
+      setOpenSnackbar(true);
       dispatch(getProductsFromCartAction(token));
     });
   };
@@ -86,6 +89,7 @@ const Product = () => {
     };
     dispatch(createReviewAction({ token: token, data: data })).then(() => {
       dispatch(getProductReviewAction(reqProduct?.id));
+      setMessage("Create review successfully");
       setOpenSnackbar(true);
     });
     setStarRating(0);
@@ -148,7 +152,7 @@ const Product = () => {
                   </div>
                   <button
                     onClick={handleAddProductToCart}
-                    className="flex rounded-md border items-center ml-10 py-1 px-3 text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l"
+                    className="flex rounded-md border items-center ml-10 py-1 px-3 text-white hover:bg-[#9a5959] bg-[#882424]"
                   >
                     <FaCartPlus />
                     <p className="ml-3 ">Add to cart</p>
@@ -257,7 +261,7 @@ const Product = () => {
                       ))}
                     </div>
                     <button
-                      className="mt-2 py-1 px-3 rounded-full text-white bg-gradient-to-r from-violet-500 to-fuchsia-500 hover:bg-gradient-to-l"
+                      className="mt-2 py-1 px-3 rounded-full text-white hover:bg-[#9a5959] bg-[#882424]"
                       onClick={handleSubmitReview}
                     >
                       Submit
@@ -277,7 +281,7 @@ const Product = () => {
               severity="success"
               sx={{ width: "100%" }}
             >
-              Create review successfully
+              {message}
             </Alert>
           </Snackbar>
         </div>

@@ -27,17 +27,9 @@ export const createCategoryAction = (categoryData) => async (dispatch) => {
   }
 };
 
-export const getAllCategoryAction = (token) => async (dispatch) => {
+export const getAllCategoryAction = () => async (dispatch) => {
   try {
-    const response = await axios.get(
-      `${BASE_API_URL}/api/admin/categories/all`,
-      {
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
+    const response = await axios.get(`${BASE_API_URL}/home/category/all`);
     const resData = response.data;
     console.log("all category ", resData);
     dispatch({ type: GET_ALL_CATEGORY, payload: resData });
