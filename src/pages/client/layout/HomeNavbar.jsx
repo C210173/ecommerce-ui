@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { FaSearch, FaShoppingCart } from "react-icons/fa";
 import {
@@ -22,8 +22,14 @@ import { BiLogOut } from "react-icons/bi";
 import ChangePasswordModal from "../components/ChangePasswordModal";
 import { Alert, Snackbar } from "@mui/material";
 import { getProductsFromCartAction } from "../../../redux/cart/Action";
+import SearchResults from "../components/SearchResults";
+import { searchProductByNameAction } from "../../../redux/product/Action";
 
 const HomeNavbar = () => {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [searchResultsVisible, setSearchResultsVisible] = useState(false);
+  const searchResultsRef = useRef(null);
+  const [searchTimeout, setSearchTimeout] = useState(null);
   const [openSnackbar, setOpenSnackbar] = useState(false);
   const [isChangePasswordModalOpen, setIsChangePasswordModalOpen] =
     useState(false);
@@ -31,6 +37,9 @@ const HomeNavbar = () => {
   const dispatch = useDispatch();
   const reqUser = useSelector((store) => store.auth.reqUser);
   const productsFromCart = useSelector((store) => store.cart.productsFromCart);
+  const searchProductByName = useSelector(
+    (store) => store.product.searchProductByName
+  );
   const token = localStorage.getItem("token");
   useEffect(() => {
     if (token) dispatch(getUserAction(token));
@@ -58,6 +67,56 @@ const HomeNavbar = () => {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const showSearchResults = () => {
+    setSearchResultsVisible(true);
+  };
+
+  const hideSearchResults = () => {
+    setSearchResultsVisible(false);
+  };
+
+  const handleSearchQueryChange = (e) => {
+    setSearchQuery(e.target.value);
+    showSearchResults();
+  };
+
+  const delayedSearch = (value) => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+    if (value.trim() !== "") {
+      setSearchTimeout(
+        setTimeout(() => {
+          dispatch(searchProductByNameAction(value));
+        }, 1500)
+      );
+    } else {
+      hideSearchResults();
+    }
+  };
+
+  useEffect(() => {
+    delayedSearch(searchQuery);
+    // eslint-disable-next-line
+  }, [searchQuery]);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (
+        searchResultsRef.current &&
+        !searchResultsRef.current.contains(e.target)
+      ) {
+        hideSearchResults();
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
     <nav className="max-w-screen-xl mx-auto py-1 flex items-center justify-between">
       <div className="flex items-center space-x-4">
@@ -67,13 +126,17 @@ const HomeNavbar = () => {
           src="https://res.cloudinary.com/dttlhvsas/image/upload/v1697608194/H_ids24p.png"
           alt=""
         />
-        <div className="relative">
+        <div className="relative" ref={searchResultsRef}>
           <input
+            onChange={handleSearchQueryChange}
             type="text"
             placeholder="Search"
             className="border border-white placeholder-white bg-transparent text-white pl-10 pr-3 py-1 rounded-full focus:outline-none"
           />
           <FaSearch className="absolute left-3 top-2 text-white" />
+          {searchResultsVisible && (
+            <SearchResults results={searchProductByName} />
+          )}
         </div>
       </div>
       <div className="space-x-4 w-[400px]">

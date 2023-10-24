@@ -5,7 +5,7 @@ import HomeFooter from "./HomeFooter";
 const DefaultHomeLayout = ({ children }) => {
   return (
     <div className="flex flex-col">
-      <div className="bg-gradient-to-b from-[#FA0909] to-[#000000] w-full fixed z-[1000000]">
+      <div className="bg-gradient-to-b from-[#FA0909] to-[#000000] w-full fixed z-[100]">
         <HomeNavbar />
       </div>
       {children}

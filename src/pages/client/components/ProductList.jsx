@@ -82,41 +82,43 @@ const ProductList = ({ listProduct }) => {
           </div>
         ))}
       </div>
-      <div className="text-center mt-4">
-        <button
-          onClick={() => setCurrentPage(currentPage - 1)}
-          className={`${
-            currentPage === 1
-              ? "opacity-50 cursor-not-allowed"
-              : "opacity-100 cursor-pointer"
-          } px-3 py-1 rounded-lg bg-gray-800 text-white`}
-          disabled={currentPage === 1}
-        >
-          Previous
-        </button>
-        {Array.from({ length: totalPages }).map((_, index) => (
+      {listProduct.length > productsPerPage && (
+        <div className="text-center mt-4">
           <button
-            key={index}
-            onClick={() => setCurrentPage(index + 1)}
+            onClick={() => setCurrentPage(currentPage - 1)}
             className={`${
-              currentPage === index + 1 ? "bg-gray-600" : "bg-gray-800"
-            } text-white px-3 py-1 rounded-lg mx-1 cursor-pointer`}
+              currentPage === 1
+                ? "opacity-50 cursor-not-allowed"
+                : "opacity-100 cursor-pointer"
+            } px-3 py-1 rounded-lg bg-gray-800 text-white`}
+            disabled={currentPage === 1}
           >
-            {index + 1}
+            Previous
           </button>
-        ))}
-        <button
-          onClick={() => setCurrentPage(currentPage + 1)}
-          className={`${
-            currentPage === totalPages
-              ? "opacity-50 cursor-not-allowed"
-              : "opacity-100 cursor-pointer"
-          } px-3 py-1 rounded-lg bg-gray-800 text-white`}
-          disabled={currentPage === totalPages}
-        >
-          Next
-        </button>
-      </div>
+          {Array.from({ length: totalPages }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentPage(index + 1)}
+              className={`${
+                currentPage === index + 1 ? "bg-gray-600" : "bg-gray-800"
+              } text-white px-3 py-1 rounded-lg mx-1 cursor-pointer`}
+            >
+              {index + 1}
+            </button>
+          ))}
+          <button
+            onClick={() => setCurrentPage(currentPage + 1)}
+            className={`${
+              currentPage === totalPages
+                ? "opacity-50 cursor-not-allowed"
+                : "opacity-100 cursor-pointer"
+            } px-3 py-1 rounded-lg bg-gray-800 text-white`}
+            disabled={currentPage === totalPages}
+          >
+            Next
+          </button>
+        </div>
+      )}
       <Snackbar
         open={openSnackbar}
         autoHideDuration={3000}

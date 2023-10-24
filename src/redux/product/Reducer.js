@@ -5,6 +5,7 @@ import {
   GET_PRODUCT,
   SEARCH_PRODUCT_BY_BRAND,
   SEARCH_PRODUCT_BY_CATEGORY,
+  SEARCH_PRODUCT_BY_NAME,
   UPDATE_PRODUCT,
 } from "./ActionType";
 
@@ -16,6 +17,7 @@ const initialState = {
   reqProduct: null,
   searchProductByCategory: [],
   searchProductByBrand: [],
+  searchProductByName: [],
 };
 
 export const productReducer = (store = initialState, { type, payload }) => {
@@ -33,6 +35,8 @@ export const productReducer = (store = initialState, { type, payload }) => {
     return { ...store, searchProductByCategory: payload };
   } else if (type === SEARCH_PRODUCT_BY_BRAND) {
     return { ...store, searchProductByBrand: payload };
+  } else if (type === SEARCH_PRODUCT_BY_NAME) {
+    return { ...store, searchProductByName: payload };
   }
   return store;
 };

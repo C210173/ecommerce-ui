@@ -43,7 +43,7 @@ const ReviewManagement = () => {
           <div className="flex justify-around">
             <Header title={"Review Management"} subtitle={"List review"} />
           </div>
-          <div className="shadow-md rounded-lg overflow-hidden mx-5">
+          <div className="shadow-md rounded-lg overflow-hidden mx-5 overflow-y-scroll max-h-[73vh]">
             <table className="min-w-full">
               <thead>
                 <tr>

@@ -7,6 +7,7 @@ import {
   GET_PRODUCT,
   SEARCH_PRODUCT_BY_BRAND,
   SEARCH_PRODUCT_BY_CATEGORY,
+  SEARCH_PRODUCT_BY_NAME,
   UPDATE_PRODUCT,
 } from "./ActionType";
 
@@ -76,6 +77,19 @@ export const searchProductByBrandAction = (brandName) => async (dispatch) => {
     const resData = response.data;
     console.log("find product by brand", resData);
     dispatch({ type: SEARCH_PRODUCT_BY_BRAND, payload: resData });
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const searchProductByNameAction = (productName) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      `${BASE_API_URL}/home/product/search/name?keyword=${productName}`
+    );
+    const resData = response.data;
+    console.log("find product by name", resData);
+    dispatch({ type: SEARCH_PRODUCT_BY_NAME, payload: resData });
   } catch (error) {
     console.log("error", error);
   }
