@@ -10,6 +10,8 @@ import { Alert, Snackbar } from "@mui/material";
 
 const ProductList = ({ listProduct }) => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const token = localStorage.getItem("token");
@@ -35,10 +37,17 @@ const ProductList = ({ listProduct }) => {
         quantity: 1,
       },
     };
-    dispatch(addToCartAction(cartData)).then(() => {
+    if (token) {
+      dispatch(addToCartAction(cartData)).then(() => {
+        setMessage("Added to cart");
+        setOpenSnackbar(true);
+        dispatch(getProductsFromCartAction(token));
+      });
+    } else {
+      setMessage("Please login to add to cart");
+      setIsError(true);
       setOpenSnackbar(true);
-      dispatch(getProductsFromCartAction(token));
-    });
+    }
   };
   const onProductClick = (productName) => {
     navigate(`/product/${productName}`);
@@ -126,10 +135,10 @@ const ProductList = ({ listProduct }) => {
       >
         <Alert
           onClose={handleSnackbarClose}
-          severity="success"
+          severity={isError ? "error" : "success"}
           sx={{ width: "100%" }}
         >
-          Added to cart
+          {message}
         </Alert>
       </Snackbar>
     </>

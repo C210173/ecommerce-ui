@@ -17,6 +17,8 @@ import EditProfile from "./pages/client/EditProfile";
 import CheckOut from "./pages/client/CheckOut";
 import Categories from "./pages/client/Categories";
 import Brand from "./pages/client/Brand";
+import OrderHistory from "./pages/client/OrderHistory";
+import MyReview from "./pages/client/MyReview";
 
 function App() {
   return (
@@ -35,6 +37,8 @@ function App() {
       <Route path="/cart" element={<Cart />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/profile/update" element={<EditProfile />} />
+      <Route path="/profile/order" element={<OrderHistory />} />
+      <Route path="/profile/review" element={<MyReview />} />
       <Route path="/checkout" element={<CheckOut />} />
       <Route path="/categories" element={<Categories />} />
       <Route path="/brand" element={<Brand />} />

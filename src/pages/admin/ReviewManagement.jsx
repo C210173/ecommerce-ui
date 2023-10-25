@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import DefaultLayout from "./layout/DefaultLayout";
-import { FaTrashAlt } from "react-icons/fa";
 import Header from "./layout/Header";
 import { format } from "date-fns";
-import ConfirmDeleteModal from "./components/ConfirmDeleteModal";
 import { useSelector } from "react-redux";
 
 const ReviewManagement = () => {
@@ -18,24 +16,6 @@ const ReviewManagement = () => {
   };
   const [currentPage, setCurrentPage] = useState(1);
   const displayedReviews = paginateData(allReview, currentPage);
-  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
-  const [deletingUser, setDeletingUser] = useState(null);
-
-  const openDeleteModal = (rating) => {
-    setDeletingUser(rating);
-    setIsDeleteModalOpen(true);
-  };
-
-  const closeDeleteModal = () => {
-    setDeletingUser(null);
-    setIsDeleteModalOpen(false);
-  };
-
-  const handleDeleteUser = (ratingId) => {
-    // Gửi yêu cầu API hoặc thực hiện xóa người dùng ở đây
-    console.log(`Deleted Rating ID: ${ratingId}`);
-    // Sau khi xóa, bạn có thể cập nhật danh sách người dùng tại đây (nếu cần)
-  };
   return (
     <DefaultLayout
       children={
@@ -65,9 +45,6 @@ const ReviewManagement = () => {
                   <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
                     Create date
                   </th>
-                  <th className="px-6 py-3 bg-gray-800 text-left text-xs leading-4 font-medium text-white uppercase tracking-wider">
-                    Action
-                  </th>
                 </tr>
               </thead>
               <tbody className="bg-gray-100">
@@ -80,14 +57,6 @@ const ReviewManagement = () => {
                     <td className="px-6 py-4">{review.comment}</td>
                     <td className="px-6 py-4">
                       {format(new Date(review.createdAt), "dd/MM/yyyy HH:mm")}
-                    </td>
-                    <td className="px-6 py-4">
-                      <button
-                        onClick={() => openDeleteModal(review)}
-                        className="text-red-600 hover:text-red-900"
-                      >
-                        <FaTrashAlt />
-                      </button>
                     </td>
                   </tr>
                 ))}
@@ -129,14 +98,6 @@ const ReviewManagement = () => {
               Next
             </button>
           </div>
-          {isDeleteModalOpen && (
-            <ConfirmDeleteModal
-              children={deletingUser}
-              onCancel={closeDeleteModal}
-              onDelete={handleDeleteUser}
-              message={"Are you sure you want to delete this review"}
-            />
-          )}
         </div>
       }
     />

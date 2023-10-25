@@ -5,6 +5,8 @@ import {
   MdAdminPanelSettings,
   MdOutlineAccountCircle,
   MdOutlineManageAccounts,
+  MdOutlinePreview,
+  MdOutlineWorkHistory,
 } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { getUserAction, logoutAction } from "../../../redux/auth/Action";
@@ -130,7 +132,7 @@ const HomeNavbar = () => {
           <input
             onChange={handleSearchQueryChange}
             type="text"
-            placeholder="Search"
+            placeholder="Search products..."
             className="border border-white placeholder-white bg-transparent text-white pl-10 pr-3 py-1 rounded-full focus:outline-none"
           />
           <FaSearch className="absolute left-3 top-2 text-white" />
@@ -237,6 +239,19 @@ const HomeNavbar = () => {
                   <MdAdminPanelSettings />
                 </ListItemIcon>
                 Change password
+              </MenuItem>
+              <Divider />
+              <MenuItem onClick={() => navigate("/profile/order")}>
+                <ListItemIcon>
+                  <MdOutlineWorkHistory />
+                </ListItemIcon>
+                Order history
+              </MenuItem>
+              <MenuItem onClick={() => navigate("/profile/review")}>
+                <ListItemIcon>
+                  <MdOutlinePreview />
+                </ListItemIcon>
+                My review
               </MenuItem>
               <Divider />
               <MenuItem onClick={handleLogout}>

@@ -4,6 +4,7 @@ import {
   GET_ALL_REVIEW,
   GET_PRODUCT_REVIEW,
   GET_USER_REVIEW,
+  TOP_RATED_PRODUCTS,
 } from "./ActionType";
 
 const initialState = {
@@ -12,6 +13,7 @@ const initialState = {
   productReview: [],
   userReview: [],
   deleteReview: null,
+  topRatedProducts: [],
 };
 
 export const reviewReducer = (store = initialState, { type, payload }) => {
@@ -25,6 +27,8 @@ export const reviewReducer = (store = initialState, { type, payload }) => {
     return { ...store, userReview: payload };
   } else if (type === DELETE_REVIEW) {
     return { ...store, deleteReview: payload };
+  } else if (type === TOP_RATED_PRODUCTS) {
+    return { ...store, topRatedProducts: payload };
   }
   return store;
 };

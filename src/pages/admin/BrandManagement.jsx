@@ -201,7 +201,7 @@ const BrandManagement = () => {
               children={deletingBrand}
               onCancel={closeDeleteModal}
               onDelete={handleDeleteBrand}
-              message={`Are you sure you want to delete category ${deletingBrand.name}`}
+              message={`Are you sure you want to delete brand ${deletingBrand.name}`}
             />
           )}
           {isCreateModalOpen && (

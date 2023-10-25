@@ -1,17 +1,19 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { getAllProductAction } from "../../../redux/product/Action";
 import Carousel from "react-multi-carousel";
 import "react-multi-carousel/lib/styles.css";
 import { BiChevronLeft, BiChevronRight } from "react-icons/bi";
 import { useNavigate } from "react-router-dom";
+import { getTopRatedProductsAction } from "../../../redux/review/Action";
 
 const ProductSlides = () => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const allProduct = useSelector((store) => store.product.allProduct);
+  const topRatedProducts = useSelector(
+    (store) => store.review.topRatedProducts
+  );
   useEffect(() => {
-    dispatch(getAllProductAction());
+    dispatch(getTopRatedProductsAction());
   }, [dispatch]);
 
   const onProductClick = (productName) => {
@@ -54,7 +56,7 @@ const ProductSlides = () => {
         <span className="font-bold text-2xl">Outstanding products</span>
       </div>
       <div className="mt-4 w-[1280px] relative">
-        {allProduct.length > 0 && (
+        {topRatedProducts.length > 0 && (
           <Carousel
             arrows={false}
             renderButtonGroupOutside={true}
@@ -62,7 +64,7 @@ const ProductSlides = () => {
             responsive={responsive}
             infinite={true}
           >
-            {allProduct.map((product) => (
+            {topRatedProducts.map((product) => (
               <div key={product.id} className="mt-4">
                 <img
                   className="w-[276px] h-[300px] object-cover rounded-md  mx-5 cursor-pointer"

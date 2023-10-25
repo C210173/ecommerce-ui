@@ -9,7 +9,7 @@ const DefaultHomeLayout = ({ children }) => {
         <HomeNavbar />
       </div>
       {children}
-      <div>
+      <div className="w-full bg-gradient-to-b from-[#FA0909] to-[#000000] mt-20">
         <HomeFooter />
       </div>
     </div>

@@ -87,12 +87,12 @@ const Cart = () => {
     <DefaultHomeLayout
       children={
         <div className="mt-20">
-          <div className="max-w-screen-xl mx-auto">
+          <div className="max-w-screen-xl mx-auto min-h-[100vh]">
             <p className="text-center text-2xl font-bold text-gray-800 my-5">
               Your Cart
             </p>
             <div className="py-2 flex justify-between">
-              <div className="w-[70%] min-h-[31.7rem]">
+              <div className="w-[70%]">
                 <table className="w-full">
                   <thead>
                     <tr>
@@ -158,7 +158,7 @@ const Cart = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="w-[30%] h-[31.7rem] bg-gradient-to-r from-[#BF2D2D] to-[#594C4C] rounded-md">
+              <div className="w-[30%] h-[40rem] bg-gradient-to-r from-[#BF2D2D] to-[#594C4C] rounded-md">
                 <div className="mt-10">
                   <p className="text-white font-semibold text-2xl text-center">
                     Order Summary

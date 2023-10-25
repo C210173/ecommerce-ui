@@ -24,6 +24,7 @@ import {
 
 const Product = () => {
   const [openSnackbar, setOpenSnackbar] = useState(false);
+  const [isError, setIsError] = useState(false);
   const [message, setMessage] = useState("");
   const { productName } = useParams();
   const dispatch = useDispatch();
@@ -59,11 +60,17 @@ const Product = () => {
         quantity: quantity,
       },
     };
-    dispatch(addToCartAction(cartData)).then(() => {
-      setMessage("Added to cart");
+    if (token) {
+      dispatch(addToCartAction(cartData)).then(() => {
+        setMessage("Added to cart");
+        setOpenSnackbar(true);
+        dispatch(getProductsFromCartAction(token));
+      });
+    } else {
+      setMessage("Please login to add to cart");
+      setIsError(true);
       setOpenSnackbar(true);
-      dispatch(getProductsFromCartAction(token));
-    });
+    }
   };
 
   const [starRating, setStarRating] = useState(0);
@@ -87,14 +94,20 @@ const Product = () => {
       title: title,
       comment: review,
     };
-    dispatch(createReviewAction({ token: token, data: data })).then(() => {
-      dispatch(getProductReviewAction(reqProduct?.id));
-      setMessage("Create review successfully");
+    if (token) {
+      dispatch(createReviewAction({ token: token, data: data })).then(() => {
+        dispatch(getProductReviewAction(reqProduct?.id));
+        setMessage("Create review successfully");
+        setOpenSnackbar(true);
+      });
+      setStarRating(0);
+      setReview("");
+      setTitle("");
+    } else {
+      setIsError(true);
+      setMessage("Please login to your account to review");
       setOpenSnackbar(true);
-    });
-    setStarRating(0);
-    setReview("");
-    setTitle("");
+    }
   };
   return (
     <DefaultHomeLayout
@@ -178,7 +191,9 @@ const Product = () => {
                       </span>
                     ))}
                     <span className="text-xl ml-2">
-                      {productReview?.averageRating}
+                      {productReview?.averageRating
+                        ? (productReview?.averageRating).toFixed(1)
+                        : 0}
                     </span>
                   </div>
                   <span className="text-gray-700">
@@ -278,7 +293,7 @@ const Product = () => {
           >
             <Alert
               onClose={handleSnackbarClose}
-              severity="success"
+              severity={isError ? "error" : "success"}
               sx={{ width: "100%" }}
             >
               {message}

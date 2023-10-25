@@ -6,6 +6,7 @@ import {
   GET_ALL_REVIEW,
   GET_PRODUCT_REVIEW,
   GET_USER_REVIEW,
+  TOP_RATED_PRODUCTS,
 } from "./ActionType";
 
 export const createReviewAction = (reviewData) => async (dispatch) => {
@@ -52,6 +53,17 @@ export const getProductReviewAction = (productId) => async (dispatch) => {
     const resData = response.data;
     console.log("product review ", resData);
     dispatch({ type: GET_PRODUCT_REVIEW, payload: resData });
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const getTopRatedProductsAction = () => async (dispatch) => {
+  try {
+    const response = await axios.get(`${BASE_API_URL}/home/top-rated-products`);
+    const resData = response.data;
+    console.log("top rated products ", resData);
+    dispatch({ type: TOP_RATED_PRODUCTS, payload: resData });
   } catch (error) {
     console.log("error", error);
   }
