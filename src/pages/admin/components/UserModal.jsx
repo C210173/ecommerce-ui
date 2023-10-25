@@ -1,17 +1,22 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { ImCancelCircle } from "react-icons/im";
 import { BsFillHouseCheckFill } from "react-icons/bs";
 import { MdOutlineMail } from "react-icons/md";
+import { useDispatch, useSelector } from "react-redux";
+import { getUserOrderByIdAction } from "../../../redux/order/Action";
 
 const UserModal = ({ user, closeModal }) => {
-  const orderHistory = [
-    { id: 1, productName: "Product 1", status: "Delivered" },
-    { id: 2, productName: "Product 2", status: "Processing" },
-    { id: 3, productName: "Product 3", status: "Cancelled" },
-    { id: 4, productName: "Product 4", status: "Delivered" },
-    { id: 5, productName: "Product 5", status: "Processing" },
-    { id: 6, productName: "Product 6", status: "Processing" },
-  ];
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+  const userOrderById = useSelector((store) => store.order.userOrderById);
+  useEffect(() => {
+    const data = {
+      token: token,
+      userId: user?.id,
+    };
+    if (token) dispatch(getUserOrderByIdAction(data));
+    // eslint-disable-next-line
+  }, [token]);
   return (
     <div className="fixed z-50 inset-0 overflow-y-auto">
       <div className="flex  items-center justify-center min-h-screen">
@@ -52,32 +57,34 @@ const UserModal = ({ user, closeModal }) => {
             </div>
             <div className="mt-3">
               <h3 className="text-gray-700">Order history</h3>
-              <div className="overflow-auto mt-2 max-h-[20vh]">
-                <table className="min-w-full">
-                  <thead>
-                    <tr>
-                      <th className="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                        ID order
-                      </th>
-                      <th className="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                        Product name
-                      </th>
-                      <th className="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
-                        Status
-                      </th>
-                    </tr>
-                  </thead>
-                  <tbody className="bg-white">
-                    {orderHistory.map((order) => (
-                      <tr key={order.id}>
-                        <td className="px-6 py-4">{order.id}</td>
-                        <td className="px-6 py-4">{order.productName}</td>
-                        <td className="px-6 py-4">{order.status}</td>
+              {userOrderById.length > 0 ? (
+                <div className="overflow-auto mt-2 max-h-[20vh]">
+                  <table className="min-w-full">
+                    <thead>
+                      <tr>
+                        <th className="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                          ID order
+                        </th>
+                        <th className="px-6 py-3 bg-gray-200 text-left text-xs leading-4 font-medium text-gray-600 uppercase tracking-wider">
+                          Status
+                        </th>
                       </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
+                    </thead>
+                    <tbody className="bg-white">
+                      {userOrderById.map((order) => (
+                        <tr key={order.id}>
+                          <td className="px-6 py-4">{order.id}</td>
+                          <td className="px-6 py-4">{order.status}</td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
+              ) : (
+                <p className="text-gray-500">
+                  The user has not placed any orders yet
+                </p>
+              )}
             </div>
           </div>
           <button onClick={() => closeModal()} className="h-5 top-0 right-0">

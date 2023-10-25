@@ -4,6 +4,7 @@ import {
   GET_ALL_ORDER,
   GET_ORDER_BY_ID,
   GET_USER_ORDER,
+  GET_USER_ORDER_BY_ID,
   UPDATE_ORDER_STATUS,
 } from "./ActionType";
 
@@ -12,6 +13,7 @@ const initialState = {
   allOrder: [],
   resOrder: null,
   userOrder: [],
+  userOrderById: [],
   updateOrder: null,
   deleteOrder: null,
 };
@@ -29,6 +31,8 @@ export const orderReducer = (store = initialState, { type, payload }) => {
     return { ...store, resOrder: payload };
   } else if (type === GET_USER_ORDER) {
     return { ...store, userOrder: payload };
+  } else if (type === GET_USER_ORDER_BY_ID) {
+    return { ...store, userOrderById: payload };
   }
   return store;
 };

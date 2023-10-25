@@ -6,6 +6,7 @@ import {
   GET_ALL_ORDER,
   GET_ORDER_BY_ID,
   GET_USER_ORDER,
+  GET_USER_ORDER_BY_ID,
   UPDATE_ORDER_STATUS,
 } from "./ActionType";
 
@@ -75,6 +76,25 @@ export const getUserOrderAction = (token) => async (dispatch) => {
     const resData = response.data;
     console.log("order of user", resData);
     dispatch({ type: GET_USER_ORDER, payload: resData });
+  } catch (error) {
+    console.log("error", error);
+  }
+};
+
+export const getUserOrderByIdAction = (data) => async (dispatch) => {
+  try {
+    const response = await axios.get(
+      `${BASE_API_URL}/api/orders/user/${data.userId}`,
+      {
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${data.token}`,
+        },
+      }
+    );
+    const resData = response.data;
+    console.log("order of user by id", resData);
+    dispatch({ type: GET_USER_ORDER_BY_ID, payload: resData });
   } catch (error) {
     console.log("error", error);
   }
