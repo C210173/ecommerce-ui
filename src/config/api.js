@@ -1,1 +1,2 @@
-export const BASE_API_URL = "http://localhost:5454";
+export const BASE_API_URL =
+  "http://instagram-env.eba-grujjy6u.us-east-1.elasticbeanstalk.com";
